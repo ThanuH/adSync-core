@@ -14,6 +14,6 @@ public class UserRegReq {
     String email;
     String businessName;
     String businessRegNo;
-    String businessCategory;
+    int businessCategory;
     String password;
 }
