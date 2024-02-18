@@ -1,9 +1,10 @@
 package com.project.adsync.domain;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+
 
 @Data
 @NoArgsConstructor
