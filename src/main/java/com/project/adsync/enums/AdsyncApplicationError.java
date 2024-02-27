@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 public enum AdsyncApplicationError {
     USER_ALREADY_EXIST(1, "User already exits", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_CREDENTIALS(2, "Invalid Username or Password, Please Check again", HttpStatus.UNAUTHORIZED);
+    INVALID_CREDENTIALS(2, "Invalid Username or Password, Please Check again", HttpStatus.UNAUTHORIZED),
+    USER_NOT_FOUND(3,"User not found" ,HttpStatus.UNAUTHORIZED );
 
     private Integer code;
     private String statusMessage;

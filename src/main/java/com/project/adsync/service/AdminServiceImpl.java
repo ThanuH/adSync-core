@@ -3,6 +3,7 @@ package com.project.adsync.service;
 import com.project.adsync.domain.User;
 import com.project.adsync.domain.UserRole;
 import com.project.adsync.repository.AdvertisementRepository;
+import com.project.adsync.repository.ReportedIssueRepository;
 import com.project.adsync.repository.UserRepository;
 import com.project.adsync.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class AdminServiceImpl implements AdminService{
     @Autowired
     AdvertisementRepository advertisementRepository;
 
+    @Autowired
+    ReportedIssueRepository reportedIssueRepository;
+
     @Override
     public int getTotalNoOfUsers(int id) {
         UserRole userRole = userRoleRepository.getUserById(id);
@@ -35,23 +39,22 @@ public class AdminServiceImpl implements AdminService{
         int totalNoOfUsers = getTotalNoOfUsers(userRoleId);
         dashBoardDetails.put("totalNoOfUsers", totalNoOfUsers);
 
-        int totalNoOfSubmissions = advertisementRepository.getSubmittedCount();
-        dashBoardDetails.put("totalNoOfSubmissions", totalNoOfSubmissions);
+        int totalNoOfSubmitedAds = advertisementRepository.getSubmittedCount();
+        dashBoardDetails.put("totalNoOfSubmitedAds", totalNoOfSubmitedAds);
 
-        int totalNoOfApproved = advertisementRepository.getApprovedCount();
-        dashBoardDetails.put("totalNoOfApproved", totalNoOfApproved);
+        int totalNoOfApprovedAds = advertisementRepository.getApprovedCount();
+        dashBoardDetails.put("totalNoOfApprovedAds", totalNoOfApprovedAds);
 
-        int totalNoOfRejected = advertisementRepository.getRejectedCount();
-        dashBoardDetails.put("totalNoOfRejected", totalNoOfRejected);
+        int totalNoOfRejectedAds = advertisementRepository.getRejectedCount();
+        dashBoardDetails.put("totalNoOfRejectedAds", totalNoOfRejectedAds);
+
+        int totalNoOfPendingIssues = reportedIssueRepository.getPendingCount();
+        dashBoardDetails.put("totalNoOfPendingIssues", totalNoOfPendingIssues);
 
         return dashBoardDetails;
     }
 
-    /*@Override
-    public int getTotalNoOfUsers() {
-        User user =  userRepository.
-        return userRepository.getUserCountByType(users.get().getUserRole());
-    }*/
+
 
 
 }

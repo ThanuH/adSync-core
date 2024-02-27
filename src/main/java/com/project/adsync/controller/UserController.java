@@ -11,6 +11,8 @@ import com.project.adsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/adSync.api/user")
 public class UserController {
@@ -45,6 +47,16 @@ public class UserController {
                 return response;
 
         }
+    }
+
+    @GetMapping(value = "/{userId}/getUserDashboardDetails")
+    public AdsyncResponse getUserDashboardDetails(@PathVariable("userId") int userId) {
+        AdsyncResponse response = new AdsyncResponse();
+        HashMap<String, Integer> dashBoardDetails = new HashMap<>();
+        dashBoardDetails = userService.getUserDashboardDetails(userId);
+        response.setResponseCode("200");
+        response.setResponseObject(dashBoardDetails);
+        return response;
     }
 
 }
