@@ -1,6 +1,8 @@
 package com.project.adsync.controller;
 
 import com.project.adsync.domain.User;
+import com.project.adsync.enums.AdsyncApplicationError;
+import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.AdsyncResponse;
 import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
@@ -17,24 +19,34 @@ public class UserController {
     UserService userService;
 
 
-    @RequestMapping(value ="/register",method = RequestMethod.POST)
-    public AdsyncResponse register(@RequestBody UserRegReq userRegReq){
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public AdsyncResponse register(@RequestBody UserRegReq userRegReq) throws Exception {
         User user = userService.registerUser(userRegReq);
         AdsyncResponse response = new AdsyncResponse();
-        response.setResponseCode("00");
-        response.setResponseObject(user);
+        if (user != null) {
+            response.setResponseCode("200");
+            response.setResponseObject(user);
+        } else {
+            throw new AdsyncException(AdsyncApplicationError.USER_ALREADY_EXIST);
+        }
         return response;
     }
 
     @PostMapping(value = "/login")
-    public AdsyncResponse login(@RequestBody LoginReq loginReq)
-    {
-        String loginMessage = userService.loginUser(loginReq);
-        AdsyncResponse response = new AdsyncResponse();
-        response.setResponseCode("00");
-        response.setResponseObject(loginMessage);
-        return response;
+    public AdsyncResponse login(@RequestBody LoginReq loginReq) {
+        if (loginReq.getEmail() == null || loginReq.getPassword() == null) {
+            throw new AdsyncException(AdsyncApplicationError.INVALID_CREDENTIALS);
+        } else {
+            AdsyncResponse response = new AdsyncResponse();
+                User user = userService.loginUser(loginReq);
+                response.setResponseCode("200");
+                String message = "Login Successful";
+                response.setResponseObject(message);
+                return response;
+
+        }
     }
+
 }
 
 

@@ -7,5 +7,5 @@ import com.project.adsync.model.request.UserRegReq;
 public interface UserService {
     User registerUser(UserRegReq userRegReq);
 
-    String loginUser(LoginReq loginReq);
+    User loginUser(LoginReq loginReq);
 }
