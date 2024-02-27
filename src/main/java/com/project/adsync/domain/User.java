@@ -37,5 +37,9 @@ public class User {
     @Column(nullable = false, length = 20)
     private String status;
 
+    @ManyToOne
+    @JoinColumn(name = "user_role_id")
+    private UserRole userRole;
+
 
 }

@@ -1,6 +1,7 @@
 package com.project.adsync.repository;
 
 import com.project.adsync.domain.User;
+import com.project.adsync.domain.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +18,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.email = :email")
     Optional<User> findUserByEmail(String email);
 
+    @Query("SELECT count(*) FROM User u WHERE u.userRole = :userRole")
+    int getUserCountByType(UserRole userRole);
+
+
+
+
+    //int getUserCountByType(UserRole userRole);*/
 }

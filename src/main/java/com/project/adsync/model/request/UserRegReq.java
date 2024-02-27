@@ -23,4 +23,5 @@ public class UserRegReq {
     String businessRegNo;
     int businessCategory;
     String password;
+    String roleType;
 }

@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "useradvertisement")
+@Table(name = "user_advertisement")
 public class UserAdvertisement {
 
     @Id
@@ -31,6 +31,9 @@ public class UserAdvertisement {
     @ManyToOne
     @JoinColumn(name = "business_category_id")
     private BusinessCategory businessCategory;
+
+    @Column(name = "status")
+    private String status;
 
     // Constructors, getters, setters
 }
