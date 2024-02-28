@@ -19,12 +19,19 @@ CREATE TABLE user (
                       FOREIGN KEY (business_category_id) REFERENCES business_category(id)
 );
 
+-- Insert two dummy records to the user table
+insert into user (contact_number,email,business_registration_number,business_name,business_category_id,password,status)
+values('0786352417','tuiter@hmail.com','PV98432838', 'Idea Computers', 3, 'admin123', 'u');
+
+insert into user (contact_number,email,business_registration_number,business_name,business_category_id,password,status)
+values('0766352414','jiter@fmail.com','PV98432833', 'Kris Medilabs', 4, 'jani123', 'u');
+
 CREATE TABLE advertisement (
                                id INT AUTO_INCREMENT PRIMARY KEY,
                                advertisement_url VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE UserAdvertisement (
+CREATE TABLE user_advertisement (
                                    id INT AUTO_INCREMENT PRIMARY KEY,
                                    user_id INT,
                                    priority INT,
@@ -88,25 +95,25 @@ INSERT INTO advertisement (advertisement_url) VALUES
 -- Inserting 20 dummy records into UserAdvertisement with status values 'R', 'S', and 'A'
 INSERT INTO user_advertisement (user_id, priority, targeted_age, business_category_id, status, targeted_audience) VALUES
                                                                                                                       (1, 1, '18-25', 1, 'R', 'Male'),
-                                                                                                                      (4, 1, '26-35',  4, 'S', 'Female'),
+                                                                                                                      (2, 1, '26-35',  4, 'S', 'Female'),
                                                                                                                       (1, 1, '36-45',  1, 'A', 'Both'),
-                                                                                                                      (4, 1, '18-25',  4, 'R', 'Male'),
+                                                                                                                      (2, 1, '18-25',  4, 'R', 'Male'),
                                                                                                                       (1, 1, '26-35',  1, 'S', 'Female'),
-                                                                                                                      (4, 1, '36-45',  4, 'A', 'Both'),
+                                                                                                                      (2, 1, '36-45',  4, 'A', 'Both'),
                                                                                                                       (1, 1, '18-25', 6, 'R', 'Male'),
-                                                                                                                      (4, 1, '26-35',  4, 'S', 'Female'),
+                                                                                                                      (2, 1, '26-35',  4, 'S', 'Female'),
                                                                                                                       (1, 1, '36-45',  1, 'A', 'Both'),
-                                                                                                                      (4, 1, '18-25',  4, 'R', 'Male'),
+                                                                                                                      (2, 1, '18-25',  4, 'R', 'Male'),
                                                                                                                       (1, 1, '26-35',  1, 'S', 'Female'),
-                                                                                                                      (4, 1, '36-45', 4, 'A', 'Both'),
+                                                                                                                      (2, 1, '36-45', 4, 'A', 'Both'),
                                                                                                                       (1, 1, '18-25', 7,'R', 'Male'),
-                                                                                                                      (4, 1, '26-35',  4, 'S', 'Female'),
+                                                                                                                      (2, 1, '26-35',  4, 'S', 'Female'),
                                                                                                                       (1, 1, '36-45',  4,'A', 'Both'),
-                                                                                                                      (4, 1, '18-25',  4, 'R', 'Male'),
+                                                                                                                      (2, 1, '18-25',  4, 'R', 'Male'),
                                                                                                                       (1, 1, '26-35',  1, 'S', 'Female'),
-                                                                                                                      (4, 1, '36-45',  4, 'A', 'Both'),
+                                                                                                                      (2, 1, '36-45',  4, 'A', 'Both'),
                                                                                                                       (1, 1, '18-25', 5, 'R', 'Male'),
-                                                                                                                      (4, 1, '26-35',  4, 'S', 'Female');
+                                                                                                                      (2, 1, '26-35',  4, 'S', 'Female');
 CREATE TABLE reported_issues (
                                  id INT AUTO_INCREMENT PRIMARY KEY,
                                  user_id INT,
@@ -119,7 +126,7 @@ CREATE TABLE reported_issues (
 
 INSERT INTO reported_issues (user_id, issue_description, status) VALUES
                                                                      (1, 'Login problem', 'P'),
-                                                                     (4, 'Payment issue', 'RS'),
+                                                                     (2, 'Payment issue', 'RS'),
                                                                      (1, 'Profile update error', 'P'),
-                                                                     (4, 'App crashing', 'RS');
+                                                                     (2, 'App crashing', 'RS');
 
