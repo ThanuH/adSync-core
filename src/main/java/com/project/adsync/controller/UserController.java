@@ -2,11 +2,13 @@ package com.project.adsync.controller;
 
 import com.project.adsync.domain.User;
 import com.project.adsync.enums.AdsyncApplicationError;
+import com.project.adsync.enums.Status;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.AdsyncResponse;
 import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
 
+import com.project.adsync.model.response.CustomerLoginResponse;
 import com.project.adsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,10 +43,19 @@ public class UserController {
         } else {
             AdsyncResponse response = new AdsyncResponse();
                 User user = userService.loginUser(loginReq);
-                response.setResponseCode("200");
-                String message = "Login Successful";
-                response.setResponseObject(message);
-                return response;
+                if(user.getStatus().equals(Status.BLOCKED_STATUS.status())){
+                    throw new AdsyncException(AdsyncApplicationError.USER_BLOCKED);
+                }else{
+                    response.setResponseCode("200");
+                    CustomerLoginResponse customerLoginResponse = new CustomerLoginResponse();
+                    customerLoginResponse.setCustomerId(user.getId());
+                    customerLoginResponse.setCustomerName(user.getBusinessName());
+                    customerLoginResponse.setCustomerEmail(user.getEmail());
+                    customerLoginResponse.setUserRole(user.getUserRole());
+                    response.setResponseObject(customerLoginResponse);
+                    return response;
+                }
+
 
         }
     }
