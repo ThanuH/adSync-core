@@ -6,8 +6,8 @@ import com.project.adsync.enums.AdsyncApplicationError;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
-import com.project.adsync.repository.AdvertisementRepository;
 import com.project.adsync.repository.BusinessCategoryRepository;
+import com.project.adsync.repository.UserAdvertisementRepository;
 import com.project.adsync.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService{
     BusinessCategoryRepository businessCategoryRepository;
 
     @Autowired
-    AdvertisementRepository advertisementRepository;
+    UserAdvertisementRepository userAdvertisementRepository;
 
     @Override
     public User registerUser(UserRegReq userRegReq) {
@@ -72,16 +72,16 @@ public class UserServiceImpl implements UserService{
         if(user == null){
             throw new AdsyncException(AdsyncApplicationError.USER_NOT_FOUND);
         }else {
-            int submittedAdCount = advertisementRepository.getCustomerWiseSubmitedAdCount(user);
+            int submittedAdCount = userAdvertisementRepository.getCustomerWiseSubmitedAdCount(user);
             dashBoardDetails.put("submittedAdCount", submittedAdCount);
 
-            int approvedAdCount = advertisementRepository.getCustomerWiseApprovedAdCount(user);
+            int approvedAdCount = userAdvertisementRepository.getCustomerWiseApprovedAdCount(user);
             dashBoardDetails.put("approvedAdCount",approvedAdCount);
 
-            int rejectedAdCount = advertisementRepository.getCustomerWiseRejectedAdCount(user);
+            int rejectedAdCount = userAdvertisementRepository.getCustomerWiseRejectedAdCount(user);
             dashBoardDetails.put("rejectedAdCount",rejectedAdCount);
 
-            int pendingAdCount = advertisementRepository.getCustomerWisePendingAdCount(user);
+            int pendingAdCount = userAdvertisementRepository.getCustomerWisePendingAdCount(user);
             dashBoardDetails.put("pendingAdCount",pendingAdCount);
 
             return dashBoardDetails;
