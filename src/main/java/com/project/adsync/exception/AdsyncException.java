@@ -22,7 +22,4 @@ public class AdsyncException extends RuntimeException{
         this.status = applicationError.status();
     }
 
-
-
-
 }
