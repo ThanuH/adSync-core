@@ -19,6 +19,10 @@ public class UserAdvertisement {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "advertisement_id") // Foreign key reference
+    private Advertisement advertisement;
+
     @Column(nullable = false)
     private int priority;
 
@@ -37,3 +41,4 @@ public class UserAdvertisement {
 
     // Constructors, getters, setters
 }
+

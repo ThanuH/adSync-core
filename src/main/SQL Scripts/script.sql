@@ -74,39 +74,7 @@ INSERT INTO user_role (role_description) VALUES ('user');
 alter table user_advertisement
     add status varchar(2) not null;
 
--- Assuming your table name is 'advertisement_table'
-INSERT INTO advertisement (advertisement_url) VALUES
-                                                  ('https://example.com/ad1'),
-                                                  ('https://example.com/ad2'),
-                                                  ('https://example.com/ad3'),
-                                                  ('https://example.com/ad4'),
-                                                  ('https://example.com/ad5');
 
-
--- Assuming your user and business_category tables are already populated
-
--- Inserting 20 dummy records into UserAdvertisement with status values 'R', 'S', and 'A'
-INSERT INTO user_advertisement (user_id, priority, targeted_age, business_category_id, status, targeted_audience) VALUES
-                                                                                                                      (1, 1, '18-25', 1, 'R', 'Male'),
-                                                                                                                      (4, 1, '26-35',  4, 'S', 'Female'),
-                                                                                                                      (1, 1, '36-45',  1, 'A', 'Both'),
-                                                                                                                      (4, 1, '18-25',  4, 'R', 'Male'),
-                                                                                                                      (1, 1, '26-35',  1, 'S', 'Female'),
-                                                                                                                      (4, 1, '36-45',  4, 'A', 'Both'),
-                                                                                                                      (1, 1, '18-25', 6, 'R', 'Male'),
-                                                                                                                      (4, 1, '26-35',  4, 'S', 'Female'),
-                                                                                                                      (1, 1, '36-45',  1, 'A', 'Both'),
-                                                                                                                      (4, 1, '18-25',  4, 'R', 'Male'),
-                                                                                                                      (1, 1, '26-35',  1, 'S', 'Female'),
-                                                                                                                      (4, 1, '36-45', 4, 'A', 'Both'),
-                                                                                                                      (1, 1, '18-25', 7,'R', 'Male'),
-                                                                                                                      (4, 1, '26-35',  4, 'S', 'Female'),
-                                                                                                                      (1, 1, '36-45',  4,'A', 'Both'),
-                                                                                                                      (4, 1, '18-25',  4, 'R', 'Male'),
-                                                                                                                      (1, 1, '26-35',  1, 'S', 'Female'),
-                                                                                                                      (4, 1, '36-45',  4, 'A', 'Both'),
-                                                                                                                      (1, 1, '18-25', 5, 'R', 'Male'),
-                                                                                                                      (4, 1, '26-35',  4, 'S', 'Female');
 CREATE TABLE reported_issues (
                                  id INT AUTO_INCREMENT PRIMARY KEY,
                                  user_id INT,
@@ -123,3 +91,44 @@ INSERT INTO reported_issues (user_id, issue_description, status) VALUES
                                                                      (1, 'Profile update error', 'P'),
                                                                      (4, 'App crashing', 'RS');
 
+ALTER TABLE user_advertisement
+    ADD COLUMN advertisement_id INT,
+ADD CONSTRAINT fk_user_advertisement_advertisement
+    FOREIGN KEY (advertisement_id) REFERENCES advertisement(id);
+
+
+-- Dummy data for Advertisement table
+INSERT INTO advertisement (advertisement_url) VALUES
+                                                  ('https://example.com/ad1'),
+                                                  ('https://example.com/ad2'),
+                                                  ('https://example.com/ad3'),
+                                                  ('https://example.com/ad4'),
+                                                  ('https://example.com/ad5'),
+                                                  ('https://example.com/ad6'),
+                                                  ('https://example.com/ad7'),
+                                                  ('https://example.com/ad8'),
+                                                  ('https://example.com/ad9'),
+                                                  ('https://example.com/ad10');
+
+-- Dummy data for UserAdvertisement table
+INSERT INTO user_advertisement (user_id, advertisement_id, priority, targeted_age, targeted_audience, business_category_id, status) VALUES
+                                                                                                                                        (1, 1, 1, '18-35', 'Male', 1, 'P'),
+                                                                                                                                        (4, 2, 2, '25-50', 'Female', 2, 'A'),
+                                                                                                                                        (1, 3, 3, '18-35', 'Both', 3, 'R'),
+                                                                                                                                        (4, 4, 4, '25-50', 'Male', 4, 'P'),
+                                                                                                                                        (1, 5, 5, '18-35', 'Female', 5, 'A'),
+                                                                                                                                        (4, 6, 6, '25-50', 'Both', 1, 'R'),
+                                                                                                                                        (1, 7, 7, '18-35', 'Male', 2, 'P'),
+                                                                                                                                        (4, 8, 8, '25-50', 'Female', 3, 'A'),
+                                                                                                                                        (1, 9, 9, '18-35', 'Both', 4, 'R'),
+                                                                                                                                        (4, 10, 10, '25-50', 'Male', 5, 'P'),
+                                                                                                                                        (1, 11, 11, '18-35', 'Female', 1, 'A'),
+                                                                                                                                        (4, 12, 12, '25-50', 'Both', 2, 'R'),
+                                                                                                                                        (1, 13, 13, '18-35', 'Male', 3, 'P'),
+                                                                                                                                        (4, 14, 14, '25-50', 'Female', 4, 'A'),
+                                                                                                                                        (1, 15, 15, '18-35', 'Both', 5, 'R'),
+                                                                                                                                        (4, 16, 16, '25-50', 'Male', 1, 'P'),
+                                                                                                                                        (1, 17, 17, '18-35', 'Female', 2, 'A'),
+                                                                                                                                        (4, 18, 18, '25-50', 'Both', 3, 'R'),
+                                                                                                                                        (1, 19, 19, '18-35', 'Male', 4, 'P'),
+                                                                                                                                        (4, 20, 20, '25-50', 'Female', 5, 'A');
