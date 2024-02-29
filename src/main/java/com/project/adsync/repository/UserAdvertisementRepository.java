@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AdvertisementRepository extends JpaRepository<UserAdvertisement, Integer> {
+public interface UserAdvertisementRepository extends JpaRepository<UserAdvertisement, Integer> {
     @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'S'")
     int getSubmittedCount();
     @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'A'")
