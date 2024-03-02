@@ -13,4 +13,6 @@ public interface AdvertisementService {
     BusinessCategory getBusinessCategoryById(int id);
 
     String uploadUserAdvertisement(UploadAdReq uploadAdReq, User user);
+
+    String updateUserAdvertisement(UploadAdReq uploadAdReq);
 }
