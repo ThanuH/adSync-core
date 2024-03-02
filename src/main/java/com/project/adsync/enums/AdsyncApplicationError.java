@@ -13,6 +13,7 @@ public enum AdsyncApplicationError {
     MEDIA_NOT_FOUND(5,"Advertisement media not found",HttpStatus.BAD_REQUEST);
 
 
+
     private Integer code;
     private String statusMessage;
     private HttpStatus status;

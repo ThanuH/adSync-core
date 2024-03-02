@@ -45,22 +45,31 @@ public class AdvertisementServiceImpl implements AdvertisementService{
     public String uploadUserAdvertisement(UploadAdReq uploadAdReq, User user) {
         Advertisement advertisement = new Advertisement();
         advertisement.setAdvertisementUrl(uploadAdReq.getUrl());
-
         Advertisement newAdvertisement = advertisemntRepository.save(advertisement);
 
-        for (BasicAdDetails basicAdDetails : uploadAdReq.getPriorityList()) {
-            UserAdvertisement userAdvertisement = new UserAdvertisement();
-            userAdvertisement.setAdvertisement(newAdvertisement);
-            userAdvertisement.setUser(user);
-            userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
-            userAdvertisement.setPriority(basicAdDetails.getPriority());
-            userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
-            userAdvertisement.setTargetedAge(basicAdDetails.getGender());
-            userAdvertisement.setStatus("P");
-            userAdvertisementRepository.save(userAdvertisement);
+        if (newAdvertisement != null){
+            for (BasicAdDetails basicAdDetails : uploadAdReq.getPriorityList()) {
+                UserAdvertisement userAdvertisement = new UserAdvertisement();
+                userAdvertisement.setAdvertisement(newAdvertisement);
+                userAdvertisement.setUser(user);
+                userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
+                userAdvertisement.setPriority(basicAdDetails.getPriority());
+                userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
+                userAdvertisement.setTargetedAge(basicAdDetails.getGender());
+                userAdvertisement.setStatus("P");
+                userAdvertisementRepository.save(userAdvertisement);
+            }
+            return "Advertisement uploaded successfully";
+        }else{
+            return "Error while uploading";
         }
+    }
 
-        return "Advertisement uploaded successfully";
+    @Override
+    public String updateUserAdvertisement(UploadAdReq uploadAdReq) {
+        UserAdvertisement oldUserAdvertisement = userAdvertisementRepository.getReferenceById(uploadAdReq.getUserAdId());
+
+        return null;
     }
 
 }

@@ -15,4 +15,6 @@ public class UploadAdReq {
     private int busCatId;
     private String url;
     private List<BasicAdDetails> priorityList;
+    private boolean isUpdate;
+    private int userAdId;
 }
