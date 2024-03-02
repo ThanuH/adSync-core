@@ -2,8 +2,8 @@ package com.project.adsync.service;
 
 import com.project.adsync.domain.User;
 import com.project.adsync.domain.UserRole;
-import com.project.adsync.repository.AdvertisementRepository;
 import com.project.adsync.repository.ReportedIssueRepository;
+import com.project.adsync.repository.UserAdvertisementRepository;
 import com.project.adsync.repository.UserRepository;
 import com.project.adsync.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class AdminServiceImpl implements AdminService{
     UserRoleRepository userRoleRepository;
 
     @Autowired
-    AdvertisementRepository advertisementRepository;
+    UserAdvertisementRepository advertisementRepository;
 
     @Autowired
     ReportedIssueRepository reportedIssueRepository;
