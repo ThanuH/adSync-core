@@ -122,30 +122,22 @@ create table user_advertisement
         foreign key (business_category_id) references business_category (id)
 );
 
+ALTER TABLE user_advertisement
+    ADD COLUMN advertisement_id INT,
+ADD CONSTRAINT fk_user_advertisement_advertisement
+    FOREIGN KEY (advertisement_id)
+    REFERENCES advertisement(id);
 
--- Inserting data into the user_advertisement table
-INSERT INTO user_advertisement (user_id, priority, targeted_age, targeted_audience, business_category_id, status)
+
+-- Inserting data into the user_advertisement table with advertisement_id for available IDs 1-5
+INSERT INTO user_advertisement (user_id, priority, targeted_age, targeted_audience, business_category_id, status, advertisement_id)
 VALUES
-    (1, 1, '18-25', 'Male', 1, 'R'),
-    (2, 2, '26-35', 'Female', 2, 'S'),
-    (3, 3, '36-45', 'Both', 3, 'A'),
-    (4, 1, '18-25', 'Male', 4, 'R'),
-    (5, 2, '26-35', 'Female', 5, 'S'),
-    (6, 3, '36-45', 'Both', 6, 'A'),
-    (7, 1, '18-25', 'Male', 7, 'R'),
-    (8, 2, '26-35', 'Female', 8, 'S'),
-    (9, 3, '36-45', 'Both', 9, 'A'),
-    (10, 1, '18-25', 'Male', 10, 'R'),
-    (1, 2, '26-35', 'Female', 11, 'S'),
-    (2, 3, '36-45', 'Both', 12, 'A'),
-    (3, 1, '18-25', 'Male', 13, 'R'),
-    (4, 2, '26-35', 'Female', 14, 'S'),
-    (5, 3, '36-45', 'Both', 15, 'A'),
-    (6, 1, '18-25', 'Male', 16, 'R'),
-    (7, 2, '26-35', 'Female', 17, 'S'),
-    (8, 3, '36-45', 'Both', 18, 'A'),
-    (9, 1, '18-25', 'Male', 19, 'R'),
-    (10, 2, '26-35', 'Female', 20, 'S');
+    (1, 1, '18-25', 'Male', 1, 'R', 1),
+    (2, 2, '26-35', 'Female', 2, 'S', 2),
+    (3, 3, '36-45', 'Both', 3, 'A', 3),
+    (4, 1, '18-25', 'Male', 4, 'R', 4),
+    (5, 2, '26-35', 'Female', 5, 'S', 5);
+
 
 create index business_category_id
     on user_advertisement (business_category_id);
