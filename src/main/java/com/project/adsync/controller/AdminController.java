@@ -13,7 +13,6 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/adSync.api/admin")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AdminController {
 
     @Autowired

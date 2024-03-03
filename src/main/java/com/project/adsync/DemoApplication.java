@@ -1,6 +1,5 @@
 package com.project.adsync;
 
-import com.project.adsync.config.CustomCorsFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +11,4 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-	@Bean
-	public CustomCorsFilter corsFilter() {
-		return new CustomCorsFilter();
-	}
 }
