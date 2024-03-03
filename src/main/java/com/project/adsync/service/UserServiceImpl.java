@@ -9,6 +9,7 @@ import com.project.adsync.model.request.UserRegReq;
 import com.project.adsync.repository.BusinessCategoryRepository;
 import com.project.adsync.repository.UserAdvertisementRepository;
 import com.project.adsync.repository.UserRepository;
+import com.project.adsync.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserAdvertisementRepository userAdvertisementRepository;
 
+    @Autowired
+    UserRoleRepository userRoleRepository;
+
     @Override
     public User registerUser(UserRegReq userRegReq) {
         Optional<User> user = userRepository.findUserByEmail(userRegReq.getEmail());
@@ -43,6 +47,7 @@ public class UserServiceImpl implements UserService{
             newUser.setBusinessCategory(businessCategory.orElse(null));
             newUser.setPassword(userRegReq.getPassword());
             newUser.setStatus("A");
+            newUser.setUserRole(userRoleRepository.getUserById(2));
 
             return userRepository.save(newUser);
         }

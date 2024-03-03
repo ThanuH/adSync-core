@@ -1,45 +1,28 @@
-create database adsyncdb;
-
 use adsyncdb;
 
-CREATE TABLE business_category (
-                                   id INT AUTO_INCREMENT PRIMARY KEY,
-                                   category_name VARCHAR(255) NOT NULL
+-- Create advertisement table & insert Data
+create table advertisement
+(
+    id                int auto_increment
+        primary key,
+    advertisement_url varchar(255) not null
 );
 
-CREATE TABLE user (
-                      id INT AUTO_INCREMENT PRIMARY KEY,
-                      contact_number VARCHAR(20) NOT NULL,
-                      email VARCHAR(100) UNIQUE NOT NULL,
-                      business_registration_number VARCHAR(100) UNIQUE,
-                      business_name VARCHAR(255),
-                      business_category_id INT,
-                      password VARCHAR(255) NOT NULL,
-                      status VARCHAR(20),
-                      FOREIGN KEY (business_category_id) REFERENCES business_category(id)
-);
+INSERT INTO advertisement (advertisement_url) VALUES
+                                                  ('https://example.com/ad1'),
+                                                  ('https://example.com/ad2'),
+                                                  ('https://example.com/ad3'),
+                                                  ('https://example.com/ad4'),
+                                                  ('https://example.com/ad5');
 
--- Insert two dummy records to the user table
-insert into user (contact_number,email,business_registration_number,business_name,business_category_id,password,status)
-values('0786352417','tuiter@hmail.com','PV98432838', 'Idea Computers', 3, 'admin123', 'u');
+-- ---------------------------------------------------------------------------------------------------------------------
 
-insert into user (contact_number,email,business_registration_number,business_name,business_category_id,password,status)
-values('0766352414','jiter@fmail.com','PV98432833', 'Kris Medilabs', 4, 'jani123', 'u');
-
-CREATE TABLE advertisement (
-                               id INT AUTO_INCREMENT PRIMARY KEY,
-                               advertisement_url VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE user_advertisement (
-                                   id INT AUTO_INCREMENT PRIMARY KEY,
-                                   user_id INT,
-                                   priority INT,
-                                   targeted_age VARCHAR(50),
-                                   targeted_audience VARCHAR(255),
-                                   business_category_id INT,
-                                   FOREIGN KEY (user_id) REFERENCES user(id),
-                                   FOREIGN KEY (business_category_id) REFERENCES business_category(id)
+-- Create business_category table & insert Data
+create table business_category
+(
+    id            int auto_increment
+        primary key,
+    category_name varchar(255) not null
 );
 
 INSERT INTO business_category (category_name) VALUES
@@ -64,111 +47,155 @@ INSERT INTO business_category (category_name) VALUES
                                                   ('Marketing and Advertising'),
                                                   ('Consulting');
 
-CREATE TABLE user_role (
-                           id INT AUTO_INCREMENT PRIMARY KEY,
-                           role_description VARCHAR(255) NOT NULL
-);
+-- ---------------------------------------------------------------------------------------------------------------------
 
-ALTER TABLE user
-    ADD COLUMN user_role_id INT,
-ADD CONSTRAINT fk_user_role
-    FOREIGN KEY (user_role_id)
-    REFERENCES user_role(id);
+-- Create user_role table & insert Data
+create table user_role
+(
+    id               int auto_increment
+        primary key,
+    role_description varchar(255) not null
+);
 
 INSERT INTO user_role (role_description) VALUES ('admin');
 INSERT INTO user_role (role_description) VALUES ('user');
 
-alter table user_advertisement
-    add status varchar(2) not null;
+-- ---------------------------------------------------------------------------------------------------------------------
 
-
-INSERT INTO advertisement (advertisement_url) VALUES
-                                                  ('https://example.com/ad1'),
-                                                  ('https://example.com/ad2'),
-                                                  ('https://example.com/ad3'),
-                                                  ('https://example.com/ad4'),
-                                                  ('https://example.com/ad5');
-
-
--- Assuming your user and business_category tables are already populated
-
--- Inserting 20 dummy records into UserAdvertisement with status values 'R', 'S', and 'A'
-INSERT INTO user_advertisement (user_id, priority, targeted_age, business_category_id, status, targeted_audience) VALUES
-                                                                                                                      (1, 1, '18-25', 1, 'R', 'Male'),
-                                                                                                                      (2, 1, '26-35',  4, 'S', 'Female'),
-                                                                                                                      (1, 1, '36-45',  1, 'A', 'Both'),
-                                                                                                                      (2, 1, '18-25',  4, 'R', 'Male'),
-                                                                                                                      (1, 1, '26-35',  1, 'S', 'Female'),
-                                                                                                                      (2, 1, '36-45',  4, 'A', 'Both'),
-                                                                                                                      (1, 1, '18-25', 6, 'R', 'Male'),
-                                                                                                                      (2, 1, '26-35',  4, 'S', 'Female'),
-                                                                                                                      (1, 1, '36-45',  1, 'A', 'Both'),
-                                                                                                                      (2, 1, '18-25',  4, 'R', 'Male'),
-                                                                                                                      (1, 1, '26-35',  1, 'S', 'Female'),
-                                                                                                                      (2, 1, '36-45', 4, 'A', 'Both'),
-                                                                                                                      (1, 1, '18-25', 7,'R', 'Male'),
-                                                                                                                      (2, 1, '26-35',  4, 'S', 'Female'),
-                                                                                                                      (1, 1, '36-45',  4,'A', 'Both'),
-                                                                                                                      (2, 1, '18-25',  4, 'R', 'Male'),
-                                                                                                                      (1, 1, '26-35',  1, 'S', 'Female'),
-                                                                                                                      (2, 1, '36-45',  4, 'A', 'Both'),
-                                                                                                                      (1, 1, '18-25', 5, 'R', 'Male'),
-                                                                                                                      (2, 1, '26-35',  4, 'S', 'Female');
-
-CREATE TABLE reported_issues (
-                                 id INT AUTO_INCREMENT PRIMARY KEY,
-                                 user_id INT,
-                                 issue_description VARCHAR(255) NOT NULL,
-                                 status VARCHAR(2) NOT NULL,
-                                 FOREIGN KEY (user_id) REFERENCES user(id)
+-- Create user table & insert Data
+create table user
+(
+    id                           int auto_increment
+        primary key,
+    contact_number               varchar(20)  not null,
+    email                        varchar(100) not null,
+    business_registration_number varchar(100) null,
+    business_name                varchar(255) null,
+    business_category_id         int          null,
+    password                     varchar(255) not null,
+    status                       varchar(20)  null,
+    user_role_id                 int          null,
+    constraint business_registration_number
+        unique (business_registration_number),
+    constraint email
+        unique (email),
+    constraint fk_user_role
+        foreign key (user_role_id) references user_role (id),
+    constraint user_ibfk_1
+        foreign key (business_category_id) references business_category (id)
 );
 
--- Assuming your user table is already populated
+create index business_category_id
+    on user (business_category_id);
 
-INSERT INTO reported_issues (user_id, issue_description, status) VALUES
-                                                                     (1, 'Login problem', 'P'),
-                                                                     (2, 'Payment issue', 'RS'),
-                                                                     (1, 'Profile update error', 'P'),
-                                                                     (2, 'App crashing', 'RS');
+-- Inserting data into the user table with status as either 'Active', 'Inactive', or 'Blocked'
+INSERT INTO user (contact_number, email, business_registration_number, business_name, business_category_id, password, status, user_role_id)
+VALUES
+    ('1234567890', 'user1@example.com', 'BRN001', 'Business1', 1, 'password1', 'A', 2),
+    ('9876543210', 'user2@example.com', 'BRN002', 'Business2', 2, 'password2', 'In', 2),
+    ('5678901234', 'user3@example.com', 'BRN003', 'Business3', 3, 'password3', 'B', 2),
+    ('4567890123', 'user4@example.com', 'BRN004', 'Business4', 4, 'password4', 'A', 2),
+    ('3456789012', 'user5@example.com', 'BRN005', 'Business5', 5, 'password5', 'In', 2),
+    ('2345678901', 'user6@example.com', 'BRN006', 'Business6', 6, 'password6', 'B', 2),
+    ('7890123456', 'user7@example.com', 'BRN007', 'Business7', 7, 'password7', 'A', 2),
+    ('8901234567', 'user8@example.com', 'BRN008', 'Business8', 8, 'password8', 'In', 2),
+    ('9012345678', 'user9@example.com', 'BRN009', 'Business9', 9, 'password9', 'B', 2),
+    ('1122334455', 'user10@example.com', 'BRN010', 'Business10', 10, 'password10', 'In', 2);
 
-ALTER TABLE user_advertisement
-    ADD COLUMN advertisement_id INT,
-ADD CONSTRAINT fk_user_advertisement_advertisement
-    FOREIGN KEY (advertisement_id) REFERENCES advertisement(id);
+
+-- ---------------------------------------------------------------------------------------------------------------------
+
+-- Create business_category table & insert Data
+create table user_advertisement
+(
+    id                   int auto_increment
+        primary key,
+    user_id              int          null,
+    priority             int          null,
+    targeted_age         varchar(50)  null,
+    targeted_audience    varchar(255) null,
+    business_category_id int          null,
+    status               varchar(2)   not null,
+    constraint user_advertisement_ibfk_1
+        foreign key (user_id) references user (id),
+    constraint user_advertisement_ibfk_2
+        foreign key (business_category_id) references business_category (id)
+);
 
 
--- Dummy data for Advertisement table
-INSERT INTO advertisement (advertisement_url) VALUES
-                                                  ('https://example.com/ad1'),
-                                                  ('https://example.com/ad2'),
-                                                  ('https://example.com/ad3'),
-                                                  ('https://example.com/ad4'),
-                                                  ('https://example.com/ad5'),
-                                                  ('https://example.com/ad6'),
-                                                  ('https://example.com/ad7'),
-                                                  ('https://example.com/ad8'),
-                                                  ('https://example.com/ad9'),
-                                                  ('https://example.com/ad10');
+-- Inserting data into the user_advertisement table
+INSERT INTO user_advertisement (user_id, priority, targeted_age, targeted_audience, business_category_id, status)
+VALUES
+    (1, 1, '18-25', 'Male', 1, 'R'),
+    (2, 2, '26-35', 'Female', 2, 'S'),
+    (3, 3, '36-45', 'Both', 3, 'A'),
+    (4, 1, '18-25', 'Male', 4, 'R'),
+    (5, 2, '26-35', 'Female', 5, 'S'),
+    (6, 3, '36-45', 'Both', 6, 'A'),
+    (7, 1, '18-25', 'Male', 7, 'R'),
+    (8, 2, '26-35', 'Female', 8, 'S'),
+    (9, 3, '36-45', 'Both', 9, 'A'),
+    (10, 1, '18-25', 'Male', 10, 'R'),
+    (1, 2, '26-35', 'Female', 11, 'S'),
+    (2, 3, '36-45', 'Both', 12, 'A'),
+    (3, 1, '18-25', 'Male', 13, 'R'),
+    (4, 2, '26-35', 'Female', 14, 'S'),
+    (5, 3, '36-45', 'Both', 15, 'A'),
+    (6, 1, '18-25', 'Male', 16, 'R'),
+    (7, 2, '26-35', 'Female', 17, 'S'),
+    (8, 3, '36-45', 'Both', 18, 'A'),
+    (9, 1, '18-25', 'Male', 19, 'R'),
+    (10, 2, '26-35', 'Female', 20, 'S');
 
--- Dummy data for UserAdvertisement table
-INSERT INTO user_advertisement (user_id, advertisement_id, priority, targeted_age, targeted_audience, business_category_id, status) VALUES
-                                                                                                                                        (1, 1, 1, '18-35', 'Male', 1, 'P'),
-                                                                                                                                        (4, 2, 2, '25-50', 'Female', 2, 'A'),
-                                                                                                                                        (1, 3, 3, '18-35', 'Both', 3, 'R'),
-                                                                                                                                        (4, 4, 4, '25-50', 'Male', 4, 'P'),
-                                                                                                                                        (1, 5, 5, '18-35', 'Female', 5, 'A'),
-                                                                                                                                        (4, 6, 6, '25-50', 'Both', 1, 'R'),
-                                                                                                                                        (1, 7, 7, '18-35', 'Male', 2, 'P'),
-                                                                                                                                        (4, 8, 8, '25-50', 'Female', 3, 'A'),
-                                                                                                                                        (1, 9, 9, '18-35', 'Both', 4, 'R'),
-                                                                                                                                        (4, 10, 10, '25-50', 'Male', 5, 'P'),
-                                                                                                                                        (1, 11, 11, '18-35', 'Female', 1, 'A'),
-                                                                                                                                        (4, 12, 12, '25-50', 'Both', 2, 'R'),
-                                                                                                                                        (1, 13, 13, '18-35', 'Male', 3, 'P'),
-                                                                                                                                        (4, 14, 14, '25-50', 'Female', 4, 'A'),
-                                                                                                                                        (1, 15, 15, '18-35', 'Both', 5, 'R'),
-                                                                                                                                        (4, 16, 16, '25-50', 'Male', 1, 'P'),
-                                                                                                                                        (1, 17, 17, '18-35', 'Female', 2, 'A'),
-                                                                                                                                        (4, 18, 18, '25-50', 'Both', 3, 'R'),
-                                                                                                                                        (1, 19, 19, '18-35', 'Male', 4, 'P'),
-                                                                                                                                        (4, 20, 20, '25-50', 'Female', 5, 'A');
+create index business_category_id
+    on user_advertisement (business_category_id);
+
+create index user_id
+    on user_advertisement (user_id);
+
+-- ---------------------------------------------------------------------------------------------------------------------
+
+-- Create business_category table & insert Data
+create table reported_issues
+(
+    id                int auto_increment
+        primary key,
+    user_id           int          null,
+    issue_description varchar(255) not null,
+    status            varchar(2)   not null,
+    constraint reported_issues_ibfk_1
+        foreign key (user_id) references user (id)
+);
+
+create index user_id
+    on reported_issues (user_id);
+
+-- Inserting data into the reported_issues table
+INSERT INTO reported_issues (user_id, issue_description, status)
+VALUES
+    (1, 'Login issue', 'P'),
+    (2, 'Payment problem', 'R'),
+    (3, 'Profile update error', 'P'),
+    (4, 'App crashing', 'R'),
+    (5, 'Password reset issue', 'P'),
+    (6, 'Billing discrepancy', 'R'),
+    (7, 'Feature request', 'P'),
+    (8, 'Account suspension', 'R'),
+    (9, 'Email not receiving', 'P'),
+    (10, 'Bug report', 'R'),
+    (1, 'Forgot password', 'P'),
+    (2, 'Transaction history error', 'R'),
+    (3, 'Security concern', 'P'),
+    (4, 'Device compatibility', 'R'),
+    (5, 'Feedback submission', 'P'),
+    (6, 'Subscription cancellation', 'R'),
+    (7, 'Notification settings', 'P'),
+    (8, 'Refund request', 'R'),
+    (9, 'Website not loading', 'P'),
+    (10, 'Account deletion request', 'R');
+
+
+-- ---------------------------------------------------------------------------------------------------------------------
+
+
+
