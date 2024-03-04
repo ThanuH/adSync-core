@@ -55,7 +55,7 @@ public class AdvertisementServiceImpl implements AdvertisementService{
                 userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
                 userAdvertisement.setPriority(basicAdDetails.getPriority());
                 userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
-                userAdvertisement.setTargetedAge(basicAdDetails.getGender());
+                userAdvertisement.setTargetedAudience(basicAdDetails.getGender());
                 userAdvertisement.setStatus("P");
                 userAdvertisementRepository.save(userAdvertisement);
             }
@@ -65,11 +65,30 @@ public class AdvertisementServiceImpl implements AdvertisementService{
         }
     }
 
-    @Override
-    public String updateUserAdvertisement(UploadAdReq uploadAdReq) {
-        UserAdvertisement oldUserAdvertisement = userAdvertisementRepository.getReferenceById(uploadAdReq.getUserAdId());
-
-        return null;
-    }
+//    @Override
+//    public String updateUserAdvertisement(UploadAdReq uploadAdReq) {
+//        Optional<UserAdvertisement> optionalUserAd = userAdvertisementRepository.findById(uploadAdReq.getUserAdId());
+//        if (optionalUserAd.isPresent()) {
+//            UserAdvertisement userAdvertisement = optionalUserAd.get();
+//
+//            // Assuming BasicAdDetails has a constructor that takes priority, ageRange, and gender
+//            for (BasicAdDetails basicAdDetails : uploadAdReq.getPriorityList()) {
+//                // Update the existing priorities or add new ones
+//                userAdvertisement.getPriorityList().add(basicAdDetails);
+//            }
+//
+//            // Update other fields if needed
+//             userAdvertisement.setAdvertisement(uploadAdReq.get);
+//             userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
+//             userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
+//             userAdvertisement.setTargetedAudience(basicAdDetails.getGender());
+//             userAdvertisement.setStatus("P");
+//
+//            userAdvertisementRepository.save(userAdvertisement);
+//            return "Advertisement updated successfully";
+//        } else {
+//            return "User Advertisement not found";
+//        }
+//    }
 
 }

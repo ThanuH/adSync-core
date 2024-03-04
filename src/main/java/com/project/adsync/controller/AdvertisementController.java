@@ -56,15 +56,25 @@ public class AdvertisementController {
         }
         return null;
     }
+//Previous One
+//    @PutMapping(value = "/{adId}/updateAd/")
+//    public AdsyncResponse updateUserAdvertisement(@PathParam ("adId") int adId, @RequestBody UploadAdReq uploadAdReq){
+//        Optional<UserAdvertisement> userAdvertisement = userAdvertisementRepository.findById(adId);
+//        if (userAdvertisement.isPresent() && uploadAdReq.isUpdate()){
+//            String response = advertisementService.updateUserAdvertisement(uploadAdReq);
+//        }else{
+//            throw new AdsyncException(AdsyncApplicationError.MEDIA_NOT_FOUND);
+//        }
+//        return null;
+//    }
 
-    @PutMapping(value = "/{adId}/updateAd/")
-    public AdsyncResponse updateUserAdvertisement(@PathParam ("adId") int adId, @RequestBody UploadAdReq uploadAdReq){
-        Optional<UserAdvertisement> userAdvertisement = userAdvertisementRepository.findById(adId);
-        if (userAdvertisement.isPresent() && uploadAdReq.isUpdate()){
-            String response = advertisementService.updateUserAdvertisement(uploadAdReq);
-        }else{
-            throw new AdsyncException(AdsyncApplicationError.MEDIA_NOT_FOUND);
-        }
-        return null;
-    }
+    //New Method
+//    @PutMapping(value = "/updateAd")
+//    public AdsyncResponse updateUserAdvertisement(@RequestBody UploadAdReq uploadAdReq) {
+//        String response = advertisementService.updateUserAdvertisement(uploadAdReq);
+//        AdsyncResponse adsyncResponse = new AdsyncResponse();
+//        adsyncResponse.setResponseCode("200");
+//        adsyncResponse.setResponseObject(response);
+//        return adsyncResponse;
+//    }
 }

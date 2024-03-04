@@ -14,5 +14,6 @@ public interface AdvertisementService {
 
     String uploadUserAdvertisement(UploadAdReq uploadAdReq, User user);
 
-    String updateUserAdvertisement(UploadAdReq uploadAdReq);
+//    String updateUserAdvertisement(UploadAdReq uploadAdReq);
+
 }
