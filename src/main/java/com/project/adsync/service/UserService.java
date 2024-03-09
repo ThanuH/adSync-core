@@ -5,6 +5,7 @@ import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
 
 import java.util.HashMap;
+import java.util.List;
 
 public interface UserService {
     User registerUser(UserRegReq userRegReq);
@@ -12,4 +13,8 @@ public interface UserService {
     User loginUser(LoginReq loginReq);
 
     HashMap<String, Integer> getUserDashboardDetails(int userId);
+
+    User getUserByUserName(String userName);
+
+    List<User> getPendingUsers();
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService{
         Optional<User> user = userRepository.findUserByEmail(userRegReq.getEmail());
         String email = user.map(User::getEmail).orElse(null);
         if (email != null) {
-           return null;
+            return null;
         } else {
             User newUser = new User();
             newUser.setEmail(userRegReq.getEmail());
@@ -92,5 +93,15 @@ public class UserServiceImpl implements UserService{
             return dashBoardDetails;
 
         }
+    }
+
+    @Override
+    public User getUserByUserName(String userName) {
+        return userRepository.findByEmail(userName);
+    }
+
+    @Override
+    public List<User> getPendingUsers() {
+        return userRepository.findAll();
     }
 }

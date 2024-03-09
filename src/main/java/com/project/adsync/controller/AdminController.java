@@ -1,22 +1,26 @@
 package com.project.adsync.controller;
 
+import com.project.adsync.domain.User;
 import com.project.adsync.model.AdsyncResponse;
 import com.project.adsync.service.AdminService;
+import com.project.adsync.service.UserService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/adSync.api/admin")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AdminController {
 
     @Autowired
     AdminService adminService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/getDashboardDetails")
     public AdsyncResponse getTotalNoOfUsers() {
@@ -26,6 +30,29 @@ public class AdminController {
         adsyncResponse.setResponseCode("200");
         adsyncResponse.setResponseObject(dashBoardDetails);
         return adsyncResponse;
+    }
+
+    @GetMapping("/getAllUsers")
+    public AdsyncResponse getPendingUsers(@RequestParam(value = "userName", required = false) String userName) {
+        AdsyncResponse adsyncResponse = new AdsyncResponse();
+        if(userName != null){
+            User user =   userService.getUserByUserName(userName);
+            if (user != null) {
+                adsyncResponse.setResponseCode("200");
+                adsyncResponse.setResponseObject(user);
+                return adsyncResponse;
+            }else {
+                adsyncResponse.setResponseCode("404");
+                adsyncResponse.setResponseObject("User not found");
+                return adsyncResponse;
+            }
+        }else {
+            List<User> pendingUsers = userService.getPendingUsers();
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject(pendingUsers);
+            return adsyncResponse;
+        }
+
     }
 
 }
