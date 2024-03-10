@@ -39,6 +39,9 @@ public class UserAdvertisement {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "unique_identifier")
+    private String uniqueIdentifier;
+
     // Constructors, getters, setters
 }
 

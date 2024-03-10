@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserAdvertisementRepository extends JpaRepository<UserAdvertisement, Integer> {
     @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'S'")
@@ -23,4 +25,6 @@ public interface UserAdvertisementRepository extends JpaRepository<UserAdvertise
     int getCustomerWiseRejectedAdCount(User user);
     @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'S' AND a.user = :user")
     int getCustomerWisePendingAdCount(User user);
+    @Query("SELECT ua FROM UserAdvertisement ua WHERE ua.uniqueIdentifier = :uniqueIdentifier")
+    List<UserAdvertisement> getAdsListByUniqueIdentifier(String uniqueIdentifier);
 }
