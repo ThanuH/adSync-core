@@ -3,6 +3,7 @@ package com.project.adsync.service;
 import com.project.adsync.domain.BusinessCategory;
 import com.project.adsync.domain.User;
 import com.project.adsync.enums.AdsyncApplicationError;
+import com.project.adsync.enums.Status;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService{
             Optional<BusinessCategory> businessCategory = businessCategoryRepository.findById(userRegReq.getBusinessCategory());
             newUser.setBusinessCategory(businessCategory.orElse(null));
             newUser.setPassword(userRegReq.getPassword());
-            newUser.setStatus("A");
+            newUser.setStatus(Status.ACTIVE_STATUS.status());
             newUser.setUserRole(userRoleRepository.getUserById(2));
 
             return userRepository.save(newUser);
