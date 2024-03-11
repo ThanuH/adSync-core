@@ -1,15 +1,14 @@
 package com.project.adsync.service;
 
 import com.project.adsync.domain.BusinessCategory;
+import com.project.adsync.domain.ReportedIssue;
 import com.project.adsync.domain.User;
 import com.project.adsync.enums.AdsyncApplicationError;
+import com.project.adsync.enums.Status;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
-import com.project.adsync.repository.BusinessCategoryRepository;
-import com.project.adsync.repository.UserAdvertisementRepository;
-import com.project.adsync.repository.UserRepository;
-import com.project.adsync.repository.UserRoleRepository;
+import com.project.adsync.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +30,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserRoleRepository userRoleRepository;
+
+    @Autowired
+    ReportedIssueRepository reportedIssueRepository;
 
     @Override
     public User registerUser(UserRegReq userRegReq) {
@@ -103,5 +105,30 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> getPendingUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public String reportIssue(int id, ReportedIssue issue) {
+        User user = userRepository.getReferenceById(id);
+        if(user == null){
+            throw new AdsyncException(AdsyncApplicationError.USER_NOT_FOUND);
+        }else {
+            ReportedIssue reportedIssue = new ReportedIssue();
+            reportedIssue.setUser(user);
+            reportedIssue.setIssueDescription(issue.getIssueDescription());
+            reportedIssue.setStatus(Status.PENDING_STATUS.status());
+            reportedIssueRepository.save(reportedIssue);
+            return "Issue reported successfully";
+        }
+    }
+
+    @Override
+    public List<ReportedIssue> getUserWiseIssues(User user) {
+        return reportedIssueRepository.getUserWiseIssues(user);
+    }
+
+    @Override
+    public List<ReportedIssue> getAllPendingReportedIssues() {
+        return reportedIssueRepository.findAll();
     }
 }

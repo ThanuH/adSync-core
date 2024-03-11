@@ -1,5 +1,6 @@
 package com.project.adsync.controller;
 
+import com.project.adsync.domain.ReportedIssue;
 import com.project.adsync.domain.User;
 import com.project.adsync.enums.AdsyncApplicationError;
 import com.project.adsync.enums.Status;
@@ -70,6 +71,17 @@ public class UserController {
         response.setResponseObject(dashBoardDetails);
         return response;
     }
+
+    @PostMapping(value = "/{id}/reportIssue")
+    public AdsyncResponse reportIssue(@PathVariable("id") int id, @RequestBody ReportedIssue issue) {
+        AdsyncResponse response = new AdsyncResponse();
+        String message  = userService.reportIssue(id, issue);
+        response.setResponseCode("200");
+        response.setResponseObject("Issue reported successfully");
+        return response;
+    }
+
+
 
 }
 
