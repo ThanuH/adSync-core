@@ -75,24 +75,7 @@ pipeline {
 	        }
 	     }
 	}	
-	//   stage("argocd") {
-	//     steps {
-	//         container('docker') {
-			
-		
-	// 	        sh ''' git config --global user.email "argocd@ipay.com" '''
- //                        // sh ''' git config --global user.name "Argocd" '''
-			
-			
-	// 	withCredentials([gitUsernamePassword(credentialsId: 'cloudadmin-git-token', gitToolName: 'Default')]) {
-	// 	   sh "git clone https://github.com/LOLC-Technologies/ipay-txn-processor-infra.git"
-	// 	   sh '''sed -i '$s/.*/'"#$BUILD_TAG"'/' "ipay-txn-processor-infra/dev/deployment.yaml" '''
-	// 	  sh ''' cd ipay-txn-processor-infra && ls -ltr && git status && git add . && git commit -m "jenkins-argocd" && git push https://github.com/LOLC-Technologies/ipay-txn-processor-infra.git main'''
-                 
- //                }
-	//         }
-	//      }
-	// }	
+}	
   }
 }   
  
