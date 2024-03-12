@@ -6,60 +6,7 @@ pipeline {
     }
   }   
    stages {  
-	// stage("Unit Tests") {
-	//         steps {
-	//             container('maven') {
-	//                 sh 'mvn test' 
-	//             }
-	//             } 
-	//         post {  
-	//             always { 
-	//                 junit testResults: '**/target/surefire-reports/TEST-*Test.xml', allowEmptyResults: true
-	//             }
-	//         }
-	//     } 
-	//     stage("Integration Tests") {
-	//         steps {						     
-	//             container('maven') {  
-	//                 sh 'mvn verify -DskipUTs'  
-	//             }
-	//         } 
-	//         post { 
-	//             always { 
-	//                 junit testResults: '**/target/failsafe-reports/TEST-*IT.xml', allowEmptyResults: true   
-	//             }
-	//         }
-	//     }
-	//   	stage('SonarQube Analysis') {
- //        		steps {
- //            		withSonarQubeEnv('sonarqube') {
- //            			container('maven') { 
- //                			sh 'mvn sonar:sonar'
- //                			echo 'env.SONAR_HOST'
- //                		}
- //            		    }
- //        		}
- //    		}
-	// 	stage('Process Reports') {
-	// 	    steps {
-	// 	    	container('maven') {
-	// 		    script {
-	// 		     echo 'Allure Reports: '+env.BUILD_URL+'allure'
-	// 			sh 'mkdir target/allure-results'
-	// 		     sh 'chmod -R o+xw target/allure-results'
-	// 		            allure([
-	// 		                    includeProperties: false,
-	// 		                    jdk: '',
-	// 		                    properties: [],
-	// 		                    reportBuildPolicy: 'ALWAYS',
-	// 		                    report: 'target/allure-report',
-	// 		                    results: [[path: 'target/allure-results']] 
-	// 		            ])
-		           
-	// 		     }
-	// 		    }
-	// 	    }
-	// 	} 
+	
 	stage("Build") {
 	    steps {
 	        container('maven') {
@@ -77,5 +24,5 @@ pipeline {
 	}	
 }	
   }
-}   
+   
  
