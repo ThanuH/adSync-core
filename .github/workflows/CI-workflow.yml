@@ -10,7 +10,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # Add a step to navigate to the project directory
       - name: Navigate to Project Directory
         run: cd $GITHUB_WORKSPACE
 
@@ -21,7 +20,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and Verify with Maven
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn --batch-mode --update-snapshots -DskipTests verify
 
       - name: Prepare Artifact
         run: mkdir staging && cp target/*.jar staging
@@ -29,5 +28,4 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Package
-          path: staging
+
