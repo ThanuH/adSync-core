@@ -7,6 +7,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Add a step to navigate to the project directory
+      - name: Navigate to Project Directory
+        run: cd $GITHUB_WORKSPACE
+
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
