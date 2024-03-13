@@ -17,4 +17,8 @@ public interface UserService {
     User getUserByUserName(String userName);
 
     List<User> getPendingUsers();
+
+    String updateUser(int userId, Boolean isBlocked);
+
+    String deleteUser(int userId);
 }

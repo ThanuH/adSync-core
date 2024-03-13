@@ -1,16 +1,14 @@
 package com.project.adsync.service;
 
 import com.project.adsync.domain.BusinessCategory;
+import com.project.adsync.domain.ReportedIssue;
 import com.project.adsync.domain.User;
+import com.project.adsync.domain.UserAdvertisement;
 import com.project.adsync.enums.AdsyncApplicationError;
-import com.project.adsync.enums.Status;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
-import com.project.adsync.repository.BusinessCategoryRepository;
-import com.project.adsync.repository.UserAdvertisementRepository;
-import com.project.adsync.repository.UserRepository;
-import com.project.adsync.repository.UserRoleRepository;
+import com.project.adsync.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +31,9 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserRoleRepository userRoleRepository;
 
+    @Autowired
+    ReportedIssueRepository reportedIssueRepository;
+
     @Override
     public User registerUser(UserRegReq userRegReq) {
         Optional<User> user = userRepository.findUserByEmail(userRegReq.getEmail());
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService{
             Optional<BusinessCategory> businessCategory = businessCategoryRepository.findById(userRegReq.getBusinessCategory());
             newUser.setBusinessCategory(businessCategory.orElse(null));
             newUser.setPassword(userRegReq.getPassword());
-            newUser.setStatus(Status.ACTIVE_STATUS.status());
+            newUser.setStatus("A");
             newUser.setUserRole(userRoleRepository.getUserById(2));
 
             return userRepository.save(newUser);
@@ -104,5 +105,36 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> getPendingUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public String updateUser(int userId, Boolean isBlocked) {
+        User user = userRepository.getReferenceById(userId);
+        if(user == null){
+            throw new AdsyncException(AdsyncApplicationError.USER_NOT_FOUND);
+        }else {
+            if(isBlocked){
+                user.setStatus("B");
+            }else{
+                user.setStatus("A");
+            }
+            userRepository.save(user);
+            return "User status updated successfully";
+        }
+    }
+
+    @Override
+    public String deleteUser(int userId) {
+        User user = userRepository.getReferenceById(userId);
+        if(user == null){
+            throw new AdsyncException(AdsyncApplicationError.USER_NOT_FOUND);
+        }else {
+            List<UserAdvertisement> userAdvertisements = userAdvertisementRepository.getUserAdvertisementByUser(user);
+            userAdvertisementRepository.deleteAll(userAdvertisements);
+            List<ReportedIssue> reportedIssues = reportedIssueRepository.getReportedIssueByUser(user);
+            reportedIssueRepository.deleteAll(reportedIssues);
+            userRepository.delete(user);
+            return "User deleted successfully";
+        }
     }
 }
