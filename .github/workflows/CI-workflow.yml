@@ -1,0 +1,32 @@
+name: CI WorkFlow
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Navigate to Project Directory
+        run: cd $GITHUB_WORKSPACE
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build and Verify with Maven
+        run: mvn --batch-mode --update-snapshots -DskipTests verify
+
+      - name: Prepare Artifact
+        run: mkdir staging && cp target/*.jar staging
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Package
+          path: staging

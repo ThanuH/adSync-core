@@ -1,5 +1,6 @@
 package com.project.adsync.controller;
 
+import com.project.adsync.domain.ReportedIssue;
 import com.project.adsync.domain.User;
 import com.project.adsync.enums.AdsyncApplicationError;
 import com.project.adsync.enums.Status;
@@ -43,19 +44,19 @@ public class UserController {
             throw new AdsyncException(AdsyncApplicationError.INVALID_CREDENTIALS);
         } else {
             AdsyncResponse response = new AdsyncResponse();
-            User user = userService.loginUser(loginReq);
-            if(user.getStatus().equals(Status.BLOCKED_STATUS.status())){
-                throw new AdsyncException(AdsyncApplicationError.USER_BLOCKED);
-            }else{
-                response.setResponseCode("200");
-                CustomerLoginResponse customerLoginResponse = new CustomerLoginResponse();
-                customerLoginResponse.setCustomerId(user.getId());
-                customerLoginResponse.setCustomerName(user.getBusinessName());
-                customerLoginResponse.setCustomerEmail(user.getEmail());
-                customerLoginResponse.setUserRole(user.getUserRole());
-                response.setResponseObject(customerLoginResponse);
-                return response;
-            }
+                User user = userService.loginUser(loginReq);
+                if(user.getStatus().equals(Status.BLOCKED_STATUS.status())){
+                    throw new AdsyncException(AdsyncApplicationError.USER_BLOCKED);
+                }else{
+                    response.setResponseCode("200");
+                    CustomerLoginResponse customerLoginResponse = new CustomerLoginResponse();
+                    customerLoginResponse.setCustomerId(user.getId());
+                    customerLoginResponse.setCustomerName(user.getBusinessName());
+                    customerLoginResponse.setCustomerEmail(user.getEmail());
+                    customerLoginResponse.setUserRole(user.getUserRole());
+                    response.setResponseObject(customerLoginResponse);
+                    return response;
+                }
 
 
         }
@@ -71,15 +72,16 @@ public class UserController {
         return response;
     }
 
-    @PutMapping(value = "/{userId}/updateUser")
-    public String updateUser(@PathVariable("userId") int userId, @RequestParam(value = "isBlocked", required = true) Boolean isBlocked) {
-        return userService.updateUser(userId, isBlocked);
+    @PostMapping(value = "/{id}/reportIssue")
+    public AdsyncResponse reportIssue(@PathVariable("id") int id, @RequestBody ReportedIssue issue) {
+        AdsyncResponse response = new AdsyncResponse();
+        String message  = userService.reportIssue(id, issue);
+        response.setResponseCode("200");
+        response.setResponseObject("Issue reported successfully");
+        return response;
     }
 
-    @DeleteMapping(value = "/{userId}/deleteUser")
-    public String deleteUser(@PathVariable("userId") int userId) {
-        return userService.deleteUser(userId);
-    }
+
 
 }
 

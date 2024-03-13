@@ -25,8 +25,6 @@ public interface UserAdvertisementRepository extends JpaRepository<UserAdvertise
     int getCustomerWiseRejectedAdCount(User user);
     @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'S' AND a.user = :user")
     int getCustomerWisePendingAdCount(User user);
-//    @Query("SELECT ua FROM UserAdvertisement ua WHERE ua.uniqueIdentifier = :uniqueIdentifier")
-//    List<UserAdvertisement> getAdsListByUniqueIdentifier(String uniqueIdentifier);
-    @Query("SELECT ua FROM UserAdvertisement ua WHERE ua.user = :user")
-    List<UserAdvertisement> getUserAdvertisementByUser(User user);
+    @Query("SELECT ua FROM UserAdvertisement ua WHERE ua.uniqueIdentifier = :uniqueIdentifier")
+    List<UserAdvertisement> getAdsListByUniqueIdentifier(String uniqueIdentifier);
 }

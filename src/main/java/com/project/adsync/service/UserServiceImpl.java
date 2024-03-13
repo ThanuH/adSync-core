@@ -3,8 +3,8 @@ package com.project.adsync.service;
 import com.project.adsync.domain.BusinessCategory;
 import com.project.adsync.domain.ReportedIssue;
 import com.project.adsync.domain.User;
-import com.project.adsync.domain.UserAdvertisement;
 import com.project.adsync.enums.AdsyncApplicationError;
+import com.project.adsync.enums.Status;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
@@ -108,33 +108,27 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String updateUser(int userId, Boolean isBlocked) {
-        User user = userRepository.getReferenceById(userId);
+    public String reportIssue(int id, ReportedIssue issue) {
+        User user = userRepository.getReferenceById(id);
         if(user == null){
             throw new AdsyncException(AdsyncApplicationError.USER_NOT_FOUND);
         }else {
-            if(isBlocked){
-                user.setStatus("B");
-            }else{
-                user.setStatus("A");
-            }
-            userRepository.save(user);
-            return "User status updated successfully";
+            ReportedIssue reportedIssue = new ReportedIssue();
+            reportedIssue.setUser(user);
+            reportedIssue.setIssueDescription(issue.getIssueDescription());
+            reportedIssue.setStatus(Status.PENDING_STATUS.status());
+            reportedIssueRepository.save(reportedIssue);
+            return "Issue reported successfully";
         }
     }
 
     @Override
-    public String deleteUser(int userId) {
-        User user = userRepository.getReferenceById(userId);
-        if(user == null){
-            throw new AdsyncException(AdsyncApplicationError.USER_NOT_FOUND);
-        }else {
-            List<UserAdvertisement> userAdvertisements = userAdvertisementRepository.getUserAdvertisementByUser(user);
-            userAdvertisementRepository.deleteAll(userAdvertisements);
-            List<ReportedIssue> reportedIssues = reportedIssueRepository.getReportedIssueByUser(user);
-            reportedIssueRepository.deleteAll(reportedIssues);
-            userRepository.delete(user);
-            return "User deleted successfully";
-        }
+    public List<ReportedIssue> getUserWiseIssues(User user) {
+        return reportedIssueRepository.getUserWiseIssues(user);
+    }
+
+    @Override
+    public List<ReportedIssue> getAllPendingReportedIssues() {
+        return reportedIssueRepository.findAll();
     }
 }

@@ -4,6 +4,7 @@ import com.project.adsync.domain.Advertisement;
 import com.project.adsync.domain.BusinessCategory;
 import com.project.adsync.domain.User;
 import com.project.adsync.domain.UserAdvertisement;
+import com.project.adsync.enums.Status;
 import com.project.adsync.model.BasicAdDetails;
 import com.project.adsync.model.request.UploadAdReq;
 import com.project.adsync.repository.AdvertisemntRepository;
@@ -28,7 +29,7 @@ public class AdvertisementServiceImpl implements AdvertisementService{
     private UserAdvertisementRepository userAdvertisementRepository;
 
     @Autowired
-    private AdvertisemntRepository advertisemntRepository;
+    private AdvertisemntRepository advertisementRepository;
 
     @Override
     public List<BusinessCategory> getBussinessCategories() {
@@ -44,51 +45,59 @@ public class AdvertisementServiceImpl implements AdvertisementService{
     @Override
     public String uploadUserAdvertisement(UploadAdReq uploadAdReq, User user) {
         Advertisement advertisement = new Advertisement();
-        advertisement.setAdvertisementUrl(uploadAdReq.getUrl());
-        Advertisement newAdvertisement = advertisemntRepository.save(advertisement);
-
-        if (newAdvertisement != null){
-            for (BasicAdDetails basicAdDetails : uploadAdReq.getPriorityList()) {
-                UserAdvertisement userAdvertisement = new UserAdvertisement();
-                userAdvertisement.setAdvertisement(newAdvertisement);
-                userAdvertisement.setUser(user);
-                userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
-                userAdvertisement.setPriority(basicAdDetails.getPriority());
-                userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
-                userAdvertisement.setTargetedAudience(basicAdDetails.getGender());
-                userAdvertisement.setStatus("P");
-                userAdvertisementRepository.save(userAdvertisement);
+        boolean isUrlUpdated = false;
+        if (uploadAdReq.isUpdate()) {
+            // 1.Fetch the advertisement set using the unique Identifier
+            List<UserAdvertisement> userAdvertisementList = userAdvertisementRepository.getAdsListByUniqueIdentifier(uploadAdReq.getUniqueIdentifier());
+            if (!userAdvertisementList.get(0).getAdvertisement().getAdvertisementUrl().equals(uploadAdReq.getUrl())) {
+                // 2. If the advertisement url is different from the existing advertisement url, then update the advertisement url
+                Advertisement updatedAdvertisement = userAdvertisementList.get(0).getAdvertisement();
+                updatedAdvertisement.setAdvertisementUrl(uploadAdReq.getUrl());
+                advertisement = advertisementRepository.save(updatedAdvertisement);
+                isUrlUpdated = true;
             }
-            return "Advertisement uploaded successfully";
-        }else{
-            return "Error while uploading";
-        }
-    }
 
-//    @Override
-//    public String updateUserAdvertisement(UploadAdReq uploadAdReq) {
-//        Optional<UserAdvertisement> optionalUserAd = userAdvertisementRepository.findById(uploadAdReq.getUserAdId());
-//        if (optionalUserAd.isPresent()) {
-//            UserAdvertisement userAdvertisement = optionalUserAd.get();
-//
-//            // Assuming BasicAdDetails has a constructor that takes priority, ageRange, and gender
-//            for (BasicAdDetails basicAdDetails : uploadAdReq.getPriorityList()) {
-//                // Update the existing priorities or add new ones
-//                userAdvertisement.getPriorityList().add(basicAdDetails);
-//            }
-//
-//            // Update other fields if needed
-//             userAdvertisement.setAdvertisement(uploadAdReq.get);
-//             userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
-//             userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
-//             userAdvertisement.setTargetedAudience(basicAdDetails.getGender());
-//             userAdvertisement.setStatus("P");
-//
-//            userAdvertisementRepository.save(userAdvertisement);
-//            return "Advertisement updated successfully";
-//        } else {
-//            return "User Advertisement not found";
-//        }
-//    }
+            for (BasicAdDetails basicAdDetails : uploadAdReq.getPriorityList()) {
+                for (UserAdvertisement userAdvertisement : userAdvertisementList) {
+                    userAdvertisement.setUser(user);
+                    userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
+                    userAdvertisement.setPriority(basicAdDetails.getPriority());
+                    userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
+                    userAdvertisement.setTargetedAudience(basicAdDetails.getGender());
+                    userAdvertisement.setStatus(Status.PENDING_STATUS.status());
+                    userAdvertisement.setUniqueIdentifier(uploadAdReq.getUniqueIdentifier());
+                    if (isUrlUpdated) {
+                        userAdvertisement.setAdvertisement(advertisement);
+                    }
+                    userAdvertisementRepository.save(userAdvertisement);
+
+                }
+            }
+
+            return "Advertisement updated successfully";
+        } else {
+
+            advertisement.setAdvertisementUrl(uploadAdReq.getUrl());
+            Advertisement newAdvertisement = advertisementRepository.save(advertisement);
+            if (newAdvertisement != null) {
+                for (BasicAdDetails basicAdDetails : uploadAdReq.getPriorityList()) {
+                    UserAdvertisement userAdvertisement = new UserAdvertisement();
+                    userAdvertisement.setAdvertisement(newAdvertisement);
+                    userAdvertisement.setUser(user);
+                    userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
+                    userAdvertisement.setPriority(basicAdDetails.getPriority());
+                    userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
+                    userAdvertisement.setTargetedAudience(basicAdDetails.getGender());
+                    userAdvertisement.setStatus(Status.PENDING_STATUS.status());
+                    userAdvertisement.setUniqueIdentifier(uploadAdReq.getUniqueIdentifier());
+                    userAdvertisementRepository.save(userAdvertisement);
+                }
+                return "Advertisement uploaded successfully";
+            } else {
+                return "Error while uploading";
+            }
+        }
+
+    }
 
 }

@@ -17,4 +17,5 @@ public class UploadAdReq {
     private List<BasicAdDetails> priorityList;
     private boolean isUpdate;
     private int userAdId;
+    private String uniqueIdentifier;
 }

@@ -13,6 +13,7 @@ public interface ReportedIssueRepository extends JpaRepository<ReportedIssue, In
 
     @Query("SELECT count(*) FROM ReportedIssue r WHERE r.status = 'P'")
     int getPendingCount();
-    @Query("SELECT ri FROM ReportedIssue ri WHERE ri.user = :user")
-    List<ReportedIssue> getReportedIssueByUser(User user);
+
+    @Query("SELECT r FROM ReportedIssue r WHERE r.status = 'P' AND r.user = :user")
+    List<ReportedIssue> getUserWiseIssues(User user);
 }

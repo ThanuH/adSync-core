@@ -1,5 +1,6 @@
 package com.project.adsync.service;
 
+import com.project.adsync.domain.ReportedIssue;
 import com.project.adsync.domain.User;
 import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
@@ -18,7 +19,9 @@ public interface UserService {
 
     List<User> getPendingUsers();
 
-    String updateUser(int userId, Boolean isBlocked);
+    String reportIssue(int id, ReportedIssue issue);
 
-    String deleteUser(int userId);
+    List<ReportedIssue> getUserWiseIssues(User user);
+
+    List<ReportedIssue> getAllPendingReportedIssues();
 }
