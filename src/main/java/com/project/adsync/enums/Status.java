@@ -1,11 +1,11 @@
 package com.project.adsync.enums;
 
 public enum Status {
-    PENDING_STATUS("P","PENDING"),
-    ACTIVE_STATUS("A","ACTIVE"),
-    APPROVED_STATUS("A","APPROVED"),
-    DECLINED_STATUS("D","DECLINED"),
-    BLOCKED_STATUS("B","BLOCKED" );
+    PENDING_STATUS("PENDING","PENDING"),
+    ACTIVE_STATUS("ACTIVE","ACTIVE"),
+    APPROVED_STATUS("APPROVED","APPROVED"),
+    DECLINED_STATUS("DECLINED","DECLINED"),
+    BLOCKED_STATUS("BLOCKED","BLOCKED" );
 
     private String status;
     private String description;
