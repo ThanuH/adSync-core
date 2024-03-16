@@ -132,11 +132,12 @@ ADD CONSTRAINT fk_user_advertisement_advertisement
 -- Inserting data into the user_advertisement table with advertisement_id for available IDs 1-5
 INSERT INTO user_advertisement (user_id, priority, targeted_age, targeted_audience, business_category_id, status, advertisement_id)
 VALUES
-    (1, 1, '18-25', 'Male', 1, 'R', 1),
-    (2, 2, '26-35', 'Female', 2, 'S', 2),
-    (3, 3, '36-45', 'Both', 3, 'A', 3),
-    (4, 1, '18-25', 'Male', 4, 'R', 4),
-    (5, 2, '26-35', 'Female', 5, 'S', 5);
+    (1, 1, '18-25', 'Male', 1, 'R', 1,'#001'),
+    (2, 2, '26-35', 'Female', 2, 'S', 2.,'#002'),
+    (2, 3, '36-45', 'Both', 3, 'A', 3,'#002'),
+    (4, 1, '18-25', 'Male', 4, 'R', 4,'#004'),
+    (5, 2, '26-35', 'Female', 5, 'S', 5,'#005'),
+    (6, 3, '36-45', 'Both', 6, 'A', 1,'#001'),;
 
 
 create index business_category_id
@@ -144,6 +145,11 @@ create index business_category_id
 
 create index user_id
     on user_advertisement (user_id);
+
+-- Adding unique_identifier column to user_advertisement table
+ALTER TABLE user_advertisement
+    ADD COLUMN unique_identifier VARCHAR(50) UNIQUE;
+
 
 -- ---------------------------------------------------------------------------------------------------------------------
 

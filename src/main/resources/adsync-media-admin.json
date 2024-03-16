@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "united-coil-415507",
+  "private_key_id": "f917c2298fe54b451b65bcdf7b5dcbbf47a54f7f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCZxx+YuTVXrF3p\nxjPwx2RZiR/W9+VIHZb7Rhlaq0R8EI95I+QCqVu78EaEI9SSJGUg9pFnNcCSY3er\ns5aSOG1WBmI4vVmLgQutSJsXClhhPZs31amcABcDVw9xFWs5nd5U64TX6+MauY/P\nEsHQRX0mpKB/AtPaZ98euKOXb+brLcZi0xnaRryxGVfUCSCJ/09qIvp0RmCMvWLy\ne4R/x/Zt8z59oGjIkDmo0hzrieLbhUl8S2oZGjRKKKMkIeuAYfmaZbdQZYR+7Ol1\n9r7HBZ+G18JX5v56BnNojJjwaXgURcjAEwZBRGum9P6lrpF2orPu/wYP5VaIUxMG\nRFDV8Q2DAgMBAAECggEAAKTJvWeWZpM3zWu2pJ0LuX2OdDrowHWHP+6vhSakYb87\n/9jQ8oXnoWYZwCHaQ5utZLGY3Y1nDKB9TBWzXVH+eywJqzfNBn14IWCQGEztyR0V\n55TttykfmjRPbJIXYdAHBzn5KLePECSTX92HPCpI937G6+Eve9bleIkd/jCfZH/0\njvPL+4arsG518qEeS+5qjqWvnggFHhhfiYPFI9Yzaf7ovwfZ6j74VUrSTgvY0zwh\ndMJVDszdhDCw6sUXjAttz3bg9oVKKpAiCt3dEv8mHWq77KrRpD5eX041FXrcZohk\njB2U9xCCofYnjeMfc9WzgYGmc0rNLBkX0xI+tb810QKBgQDK/6tPX4DesIs+GsBa\n5drhMUv0FsIKz2ggjgxs9NZl1dPmY93BGVi370naOiliro4ifL5x+qUX79UuW8me\n7G8VsiQIogue/nLMSlRjNSqhjtpUmNX41+kkKMdyOzya1X3IkaxGNPLTLkwlxkXt\nK7lNZ+VfUrzVt/+VxnqxSNBTaQKBgQDB7Y4whB4BrayKjaywwQcL3mgKrD3lpso/\nsoicG+Ok8Mh9LC1l9e8csotvm8W22GYtUn1GsVkhlsnebEN5Ph6S0iaIW/8MhXxZ\nNG53Yl3XzYQb3/eJxjAFNeXChzC1X6KZXn6gVtcCuT86gXWzQ02N1pXNrL+N+NO3\nkxYJUXq4CwKBgQC9s4cnuZv4fwrgkqdHSp3s6+CKzemvqHsqURSTjYn9yIEpQBIv\nLbyWxutBIDEkovL4j5J5eT1mzR1vIR+dgF2e7MZ3utcZUbd96chKnZilOZYWkG0F\nCuA4hlM8ENdl6jSNhnRzd2+kohNPCaa3KLEWAQ18sxj8r+IM2Vo26lCkYQKBgGJP\n0+20jKG9MeNrv0g8Ex5pOcVvXFG4JH/2OlspqFZN2tXaN4mhC/84ZIfIKItxWRtQ\n3kGgVtc4Yk5oBCzK2SUFdJNcUAhBA7EVa4sKSxjED10yRYOK/X0mvbvIXWEVgpDN\n3tPaMlYnI269grXGQOLPDlKeaN3Ib0x5PIqsy9HRAoGBAIlsD75ad335uBWrAo3R\nkxsdUd9ESpJj5P0PqYtybDS9rB/YDhS0BWvet9BYZZyxLDQjHhVkpeIaD+TYlO7G\nDJa7Zu1nj515TKB2nN6L9o8BRGy6WHMwjNZwvVqE9CIpKpV/citLFIQhMZ/cWreU\n3vg3V6gUzOPO10jY6z8nvGFs\n-----END PRIVATE KEY-----\n",
+  "client_email": "adsync-storage-admin@united-coil-415507.iam.gserviceaccount.com",
+  "client_id": "110687660711234257568",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/adsync-storage-admin%40united-coil-415507.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
