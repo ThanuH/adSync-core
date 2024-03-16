@@ -57,7 +57,7 @@ public class CloudStorageController {
         return filNameReference;
     }
 
-    @GetMapping("getvideo")
+    @GetMapping("/getvideo")
     public ResponseEntity<ByteArrayResource> getVideo(@RequestParam("videoName") String videoName){
         // Get the blob from Google Cloud Storage
         Blob blob = storage.get(bucketName, videoName);

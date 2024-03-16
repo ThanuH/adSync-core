@@ -1,5 +1,13 @@
-FROM us-central1-docker.pkg.dev/united-coil-415507/ad-sync-core:9a06d6a5da666b8cff0fd858f6f51a8d52e115a1
+# Use a base image with Java 17
+#FROM adoptopenjdk/openjdk17:alpine-jre
+#VOLUME /tmp
+#ADD target/*.jar app.jar
+
+#create the docker file for the spring boot application
+# Path: Dockerfile
+# Use a base image with Java 17
+FROM openjdk:17-alpine
 VOLUME /tmp
-ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ADD target/*.jar adsync-core-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/adsync-core-0.0.1-SNAPSHOT.jar"]
+EXPOSE 8080
