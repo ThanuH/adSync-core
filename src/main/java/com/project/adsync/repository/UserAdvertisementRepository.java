@@ -27,4 +27,6 @@ public interface UserAdvertisementRepository extends JpaRepository<UserAdvertise
     int getCustomerWisePendingAdCount(User user);
     @Query("SELECT ua FROM UserAdvertisement ua WHERE ua.uniqueIdentifier = :uniqueIdentifier")
     List<UserAdvertisement> getAdsListByUniqueIdentifier(String uniqueIdentifier);
+    @Query("SELECT ua FROM UserAdvertisement ua WHERE ua.targetedAge = :ageRange AND ua.targetedAudience = :gender AND ua.priority = :priority AND ua.status = :status")
+    List<UserAdvertisement> findMatchingAdsByDemographicAndPriority(String ageRange, String gender, int priority, String status);
 }
