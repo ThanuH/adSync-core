@@ -1,9 +1,6 @@
 package com.project.adsync.service;
 
-import com.project.adsync.domain.Advertisement;
-import com.project.adsync.domain.BusinessCategory;
-import com.project.adsync.domain.User;
-import com.project.adsync.domain.UserAdvertisement;
+import com.project.adsync.domain.*;
 import com.project.adsync.enums.Status;
 import com.project.adsync.model.BasicAdDetails;
 import com.project.adsync.model.request.UploadAdReq;
@@ -14,8 +11,7 @@ import com.project.adsync.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AdvertisementServiceImpl implements AdvertisementService{
@@ -99,5 +95,137 @@ public class AdvertisementServiceImpl implements AdvertisementService{
         }
 
     }
+
+    @Override
+    public Advertisement analyzeDemographicData(List<DemographicData> demographicDataList) {
+        Advertisement toDisplay;
+        Random rand = new Random();
+        int totalApprovedAds = userAdvertisementRepository.getApprovedCount();
+
+        if (demographicDataList.isEmpty()) {    // If no demographic data is provided or no audience present, display a random ad
+            int randIndex = rand.nextInt(totalApprovedAds);
+            toDisplay = userAdvertisementRepository.findAll().get(randIndex).getAdvertisement();
+        }
+        else {    // If demographic data is provided, display an ad based on the demographic data
+            int randIndex = rand.nextInt(totalApprovedAds);
+            toDisplay = userAdvertisementRepository.findAll().get(randIndex).getAdvertisement();    // Display a random ad if no matching ad is found
+
+            Map<String, Integer> categoryCounts = new HashMap<>();
+            Map<String, Integer> topCategories = new HashMap<>();
+
+            for (DemographicData demographicData : demographicDataList) { // Count the number of people in each category
+                String category = demographicData.getAgeRange() + "-" + demographicData.getGender();
+                categoryCounts.put(category, categoryCounts.getOrDefault(category, 0) + 1);
+            }
+
+            categoryCounts.entrySet().stream() // Sort the categories by the number of people in each category
+                    .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                    .limit(2)
+                    .forEach(entry -> topCategories.put(entry.getKey(), entry.getValue())); // Get the top 2 categories
+
+            outerLoop:
+            for (Map.Entry<String, Integer> entry : topCategories.entrySet()) { // For each of the top 2 categories
+                String takenRange = entry.getKey().substring(0, 5);
+                String takenGender = entry.getKey().substring(6);
+
+                for (int checkingPriority = 1; checkingPriority <= 3; checkingPriority++) { // Check for ads with priority 1, 2, and 3
+                    List<UserAdvertisement> matchingAds = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, takenGender, checkingPriority, "A");
+                    if (!matchingAds.isEmpty()) {   // If matching ads are found, display a random ad from the matching ads for specific gender
+                        randIndex = rand.nextInt(matchingAds.size());
+                        toDisplay = matchingAds.get(randIndex).getAdvertisement();
+                        break outerLoop;
+                    }
+
+                    List<UserAdvertisement> matchingAds2 = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, "Both", checkingPriority, "A");
+                    if (!matchingAds2.isEmpty()) {  // If matching ads are found, display a random ad from the matching ads for gender="Both"
+                        randIndex = rand.nextInt(matchingAds2.size());
+                        toDisplay = matchingAds2.get(randIndex).getAdvertisement();
+                        break outerLoop;
+                    }
+                }
+            }
+        }
+        return toDisplay;
+    }
+
+//    @Override
+//    public Advertisement analyzeDemographicData(List<DemographicData> demographicDataList) {
+//        Advertisement toDisplay = new Advertisement();
+//        Map<String, Integer> categoryCounts = new HashMap<>();
+//        Map<String, Integer> topCategories = new HashMap<>();
+//        Random rand = new Random();
+//        int randInt = rand.nextInt(userAdvertisementRepository.getApprovedCount());
+//
+//        if (demographicDataList.isEmpty()) {
+//            toDisplay = userAdvertisementRepository.findAll().get(randInt).getAdvertisement();
+//        } else {
+//            toDisplay = userAdvertisementRepository.findAll().get(randInt).getAdvertisement();
+//
+//            for (DemographicData demographicData : demographicDataList) {
+//                String category = demographicData.getAgeRange() + "-" + demographicData.getGender();
+//                categoryCounts.put(category, categoryCounts.getOrDefault(category, 0) + 1);
+//            }
+//            categoryCounts.entrySet().stream()
+//                    .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+//                    .limit(2)
+//                    .forEach(entry -> topCategories.put(entry.getKey(), entry.getValue()));
+//
+//            Outerloop:
+//            for ( Map.Entry<String, Integer> entry : topCategories.entrySet()) {
+//                String takenRange = entry.getKey().substring(0,5);
+//                String takenGender = entry.getKey().substring(6);
+//                int peopleCount = entry.getValue();
+//                int checkingPriority;
+//
+//                for (checkingPriority = 1; checkingPriority <= 3 ; checkingPriority++) {
+//                    List<UserAdvertisement> matchingAds = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, takenGender, checkingPriority, "A");
+//                    List<UserAdvertisement> matchingAds2 = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, "Both", checkingPriority, "A");
+//
+//                    if (!matchingAds.isEmpty()) {
+//                        randInt = rand.nextInt( matchingAds.size() );
+//                        toDisplay=(matchingAds.get(randInt).getAdvertisement());
+//                        break Outerloop;
+//                    } else if (!matchingAds2.isEmpty()) {
+//                        randInt = rand.nextInt( matchingAds2.size() );
+//                        toDisplay=(matchingAds2.get(randInt).getAdvertisement());
+//                        break Outerloop;
+//                    }
+//                }
+//            }
+//        }
+//        return toDisplay;
+//    }
+
+//    Body for POSTMAN testing
+//            [
+//    {
+//        "ageRange": "18-24",
+//            "gender": "Male"
+//    },
+//    {
+//        "ageRange": "18-24",
+//            "gender": "Male"
+//    },
+//    {
+//        "ageRange": "25-34",
+//            "gender": "Female"
+//    },
+//    {
+//        "ageRange": "35-44",
+//            "gender": "Male"
+//    },
+//    {
+//        "ageRange": "18-24",
+//            "gender": "Female"
+//    },
+//    {
+//        "ageRange": "18-24",
+//            "gender": "Female"
+//    },
+//    {
+//        "ageRange": "18-24",
+//            "gender": "Female"
+//    }
+//]
 
 }
