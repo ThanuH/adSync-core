@@ -8,6 +8,6 @@
 # Use a base image with Java 17
 FROM openjdk:17-alpine
 VOLUME /tmp
-ADD target/*.jar adsync-core-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java","-jar","/adsync-core-0.0.1-SNAPSHOT.jar"]
+ADD target/*.jar demo-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/demo-0.0.1-SNAPSHOT.jar"]
 EXPOSE 8080
