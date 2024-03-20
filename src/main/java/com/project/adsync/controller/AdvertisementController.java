@@ -1,9 +1,6 @@
 package com.project.adsync.controller;
 
-import com.project.adsync.domain.Advertisement;
-import com.project.adsync.domain.BusinessCategory;
-import com.project.adsync.domain.User;
-import com.project.adsync.domain.UserAdvertisement;
+import com.project.adsync.domain.*;
 import com.project.adsync.enums.AdsyncApplicationError;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.AdsyncResponse;
@@ -15,9 +12,11 @@ import com.project.adsync.service.AdvertisementService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -60,7 +59,8 @@ public class AdvertisementController {
         }
     }
 
-
-
-
+    @PostMapping(value = "/analyzeDemographicData")
+    public Advertisement analyzeDemographicData(@RequestBody List<DemographicData> demographicDataList) {
+        return advertisementService.analyzeDemographicData(demographicDataList);
+    }
 }
