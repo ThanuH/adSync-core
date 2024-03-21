@@ -14,7 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/adSync.api/admin")
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://34.72.244.127:8081")
 public class AdminController {
 
     @Autowired

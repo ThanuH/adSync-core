@@ -21,7 +21,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/adSync.api/advertisement")
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://34.72.244.127:8081")
 public class AdvertisementController {
 
     @Autowired

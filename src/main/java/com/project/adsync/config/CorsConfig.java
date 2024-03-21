@@ -16,17 +16,20 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/advertisement/**")
-                        .allowedOrigins("http://localhost:3000")
+                        //.allowedOrigins("http://localhost:3000")
+                        .allowedOrigins("http://34.72.244.127:8081")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*");
 
                 registry.addMapping("/user/**")
-                        .allowedOrigins("http://localhost:3000")
+                        //.allowedOrigins("http://localhost:3000")
+                        .allowedOrigins("http://34.72.244.127:8081")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*");
 
                 registry.addMapping("/admin/**")
-                        .allowedOrigins("http://localhost:3000")
+                        //.allowedOrigins("http://localhost:3000")
+                        .allowedOrigins("http://34.72.244.127:8081")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*");
             }
