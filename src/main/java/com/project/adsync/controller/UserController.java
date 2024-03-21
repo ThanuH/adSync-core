@@ -19,7 +19,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/adSync.api/user")
 //@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://34.72.244.127:8081")
+@CrossOrigin(origins = "http://34.72.244.127:8080")
 public class UserController {
 
     @Autowired
