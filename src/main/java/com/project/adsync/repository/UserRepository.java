@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByEmailAndPassword(String email, String password);
 
     @Query("SELECT u FROM User u WHERE u.email = :email")
-    Optional<User> findUserByEmail(String email);
+    Optional<User> findUserByEmail(@Param("email") String email);
 
     @Query("SELECT count(*) FROM User u WHERE u.userRole = :userRole")
     int getUserCountByType(UserRole userRole);
