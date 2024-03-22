@@ -9,6 +9,8 @@ import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.request.LoginReq;
 import com.project.adsync.model.request.UserRegReq;
 import com.project.adsync.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +36,13 @@ public class UserServiceImpl implements UserService{
     @Autowired
     ReportedIssueRepository reportedIssueRepository;
 
+    private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
     public User registerUser(UserRegReq userRegReq) {
         Optional<User> user = userRepository.findUserByEmail(userRegReq.getEmail());
         String email = user.map(User::getEmail).orElse(null);
+        logger.info("Email: " + email);
         if (email != null) {
             return null;
         } else {
@@ -51,7 +56,7 @@ public class UserServiceImpl implements UserService{
             newUser.setPassword(userRegReq.getPassword());
             newUser.setStatus("A");
             newUser.setUserRole(userRoleRepository.getUserById(2));
-
+            logger.info("User " + user.toString());
             return userRepository.save(newUser);
         }
 
