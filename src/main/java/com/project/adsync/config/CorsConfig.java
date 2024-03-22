@@ -10,34 +10,38 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig {
 
-  /*  @Bean
+    @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/advertisement/**")
+            public void addCorsMappings(CorsRegistry corsRegistry) {
+                corsRegistry.addMapping("/adSync.api/advertisement/**")
                         //.allowedOrigins("http://localhost:3000")
                         .allowedOrigins("http://www.adsynclk.xyz")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*");
 
-                registry.addMapping("/user/**")
+                corsRegistry.addMapping("/adSync.api/user/**")
                         //.allowedOrigins("http://localhost:3000")
                         .allowedOrigins("http://www.adsynclk.xyz")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*");
 
-                registry.addMapping("/admin/**")
+                corsRegistry.addMapping("/adSync.api/admin/**")
                         //.allowedOrigins("http://localhost:3000")
                         .allowedOrigins("http://www.adsynclk.xyz")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*");
+                corsRegistry.addMapping("/adSync.api/cloudStorage/**") // Add this line
+                        .allowedOrigins("http://www.adsynclk.xyz")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Allow only POST method for uploads
                         .allowedHeaders("*");
             }
 
 
-        };*/
+        };
 
-    @Bean
+    /*@Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
@@ -48,5 +52,6 @@ public class CorsConfig {
                         .allowedHeaders("*");
             }
         };
+    }*/
     }
 }
