@@ -4,6 +4,7 @@ import com.project.adsync.domain.ReportedIssue;
 import com.project.adsync.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public interface ReportedIssueRepository extends JpaRepository<ReportedIssue, In
     int getPendingCount();
 
     @Query("SELECT r FROM ReportedIssue r WHERE r.status = 'P' AND r.user = :user")
-    List<ReportedIssue> getUserWiseIssues(User user);
+    List<ReportedIssue> getUserWiseIssues(@Param("user") User user);
 }

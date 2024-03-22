@@ -3,6 +3,7 @@ package com.project.adsync.service;
 import com.project.adsync.domain.ReportedIssue;
 import com.project.adsync.domain.User;
 import com.project.adsync.model.request.LoginReq;
+import com.project.adsync.model.request.ReportIssueReq;
 import com.project.adsync.model.request.UserRegReq;
 
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public interface UserService {
 
     List<User> getPendingUsers();
 
-    String reportIssue(int id, ReportedIssue issue);
+    String reportIssue(int id, ReportIssueReq issue);
 
     List<ReportedIssue> getUserWiseIssues(User user);
 

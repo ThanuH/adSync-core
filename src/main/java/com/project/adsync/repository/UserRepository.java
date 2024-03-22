@@ -20,10 +20,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findUserByEmail(@Param("email") String email);
 
     @Query("SELECT count(*) FROM User u WHERE u.userRole = :userRole")
-    int getUserCountByType(UserRole userRole);
+    int getUserCountByType(@Param("userRole") UserRole userRole);
 
     @Query("SELECT u FROM User u WHERE u.id = :userId")
-    User getUserById(int userId);
+    User getUserById(@Param("userId") int userId);
 
     @Query("SELECT u FROM User u WHERE u.status = 'S'")
     List<User> getPendingUsers();

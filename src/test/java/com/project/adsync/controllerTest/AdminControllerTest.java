@@ -38,6 +38,8 @@ class AdminControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    //Generated test cases for admin controller
+
 
     @Test
     void shouldReturnDashboardDetailsWhenGetTotalNoOfUsers() throws Exception {

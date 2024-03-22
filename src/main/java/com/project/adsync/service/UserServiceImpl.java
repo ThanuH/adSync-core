@@ -7,6 +7,7 @@ import com.project.adsync.enums.AdsyncApplicationError;
 import com.project.adsync.enums.Status;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.request.LoginReq;
+import com.project.adsync.model.request.ReportIssueReq;
 import com.project.adsync.model.request.UserRegReq;
 import com.project.adsync.repository.*;
 import org.slf4j.Logger;
@@ -113,7 +114,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String reportIssue(int id, ReportedIssue issue) {
+    public String reportIssue(int id, ReportIssueReq issue) {
         User user = userRepository.getReferenceById(id);
         if(user == null){
             throw new AdsyncException(AdsyncApplicationError.USER_NOT_FOUND);

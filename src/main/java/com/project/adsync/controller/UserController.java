@@ -7,6 +7,7 @@ import com.project.adsync.enums.Status;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.AdsyncResponse;
 import com.project.adsync.model.request.LoginReq;
+import com.project.adsync.model.request.ReportIssueReq;
 import com.project.adsync.model.request.UserRegReq;
 
 import com.project.adsync.model.response.CustomerLoginResponse;
@@ -74,7 +75,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/{id}/reportIssue")
-    public AdsyncResponse reportIssue(@PathVariable("id") int id, @RequestBody ReportedIssue issue) {
+    public AdsyncResponse reportIssue(@PathVariable("id") int id, @RequestBody ReportIssueReq issue) {
         AdsyncResponse response = new AdsyncResponse();
         String message  = userService.reportIssue(id, issue);
         response.setResponseCode("200");
