@@ -60,19 +60,16 @@ public class AdminController {
     @GetMapping("/getAllPendingReportedIssues")
     public AdsyncResponse getAllPendingReportedIssues(@RequestParam(value = "userName", required = false) String userName) {
         AdsyncResponse adsyncResponse = new AdsyncResponse();
-        if(userName != null){
-            User user =   userService.getUserByUserName(userName);
-            if (user != null) {
-                List<ReportedIssue> userWiseIssues = userService.getUserWiseIssues(user);
-                adsyncResponse.setResponseCode("200");
-                adsyncResponse.setResponseObject(userWiseIssues);
-            }else {
-                List<ReportedIssue> reportedIssues = userService.getAllPendingReportedIssues();
-                adsyncResponse.setResponseCode("200");
-                adsyncResponse.setResponseObject(reportedIssues);
-            }
+        User user =   userService.getUserByUserName(userName);
+        if (user != null) {
+            List<ReportedIssue> userWiseIssues = userService.getUserWiseIssues(user);
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject(userWiseIssues);
+        }else {
+            List<ReportedIssue> reportedIssues = userService.getAllPendingReportedIssues();
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject(reportedIssues);
         }
-
         return adsyncResponse;
     }
 
