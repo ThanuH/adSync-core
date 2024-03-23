@@ -7,20 +7,19 @@ import com.project.adsync.model.request.UploadAdReq;
 import com.project.adsync.repository.AdvertisemntRepository;
 import com.project.adsync.repository.BusinessCategoryRepository;
 import com.project.adsync.repository.UserAdvertisementRepository;
-import com.project.adsync.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class AdvertisementServiceImpl implements AdvertisementService{
-    @Autowired
-    private BusinessCategoryRepository businessCategoryRepository;
+public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Autowired
-    private UserRepository userRepository;
+    private BusinessCategoryRepository businessCategoryRepository;
 
     @Autowired
     private UserAdvertisementRepository userAdvertisementRepository;
@@ -28,9 +27,12 @@ public class AdvertisementServiceImpl implements AdvertisementService{
     @Autowired
     private AdvertisemntRepository advertisementRepository;
 
+    @Autowired
+    private CloudStorageService cloudStorageService;
+
     @Override
     public List<BusinessCategory> getBussinessCategories() {
-        return  businessCategoryRepository.findAll();
+        return businessCategoryRepository.findAll();
     }
 
     @Override
@@ -97,67 +99,18 @@ public class AdvertisementServiceImpl implements AdvertisementService{
 
     }
 
-//    @Override
-//    public Advertisement analyzeDemographicData(List<DemographicData> demographicDataList) {
-//        Advertisement toDisplay = new Advertisement();
-//        Map<String, Integer> categoryCounts = new HashMap<>();
-//        Map<String, Integer> topCategories = new HashMap<>();
-//        Random rand = new Random();
-//        int randInt = rand.nextInt(userAdvertisementRepository.getApprovedCount()+1);
-//
-//        if (demographicDataList.isEmpty()) {
-//            toDisplay = userAdvertisementRepository.findAll().get(randInt).getAdvertisement();
-//        } else {
-//            toDisplay = userAdvertisementRepository.findAll().get(randInt).getAdvertisement();
-//
-//            for (DemographicData demographicData : demographicDataList) {
-//                String category = demographicData.getAgeRange() + "-" + demographicData.getGender();
-//                categoryCounts.put(category, categoryCounts.getOrDefault(category, 0) + 1);
-//            }
-//            categoryCounts.entrySet().stream()
-//                    .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-//                    .limit(2)
-//                    .forEach(entry -> topCategories.put(entry.getKey(), entry.getValue()));
-//
-//            Outerloop:
-//            for ( Map.Entry<String, Integer> entry : topCategories.entrySet()) {
-//                String takenRange = entry.getKey().substring(0,5);
-//                String takenGender = entry.getKey().substring(6);
-//                int peopleCount = entry.getValue();
-//                int checkingPriority;
-//
-//                for (checkingPriority = 1; checkingPriority <= 3 ; checkingPriority++) {
-//                    List<UserAdvertisement> matchingAds = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, takenGender, checkingPriority, "A");
-//                    List<UserAdvertisement> matchingAds2 = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, "Both", checkingPriority, "A");
-//
-//                    if (!matchingAds.isEmpty()) {
-//                        randInt = rand.nextInt(matchingAds.size()+1);
-//                        if (randInt==0) randInt=1;
-//                        toDisplay=(matchingAds.get(randInt-1).getAdvertisement());
-//                        break Outerloop;
-//                    } else if (!matchingAds2.isEmpty()) {
-//                        randInt = rand.nextInt(matchingAds2.size()+1);
-//                        if (randInt==0) randInt=1;
-//                        toDisplay=(matchingAds2.get(randInt-1).getAdvertisement());
-//                        break Outerloop;
-//                    }
-//                }
-//            }
-//        }
-//        return toDisplay;
-//    }
-
     @Override
-    public Advertisement analyzeDemographicData(List<DemographicData> demographicDataList) {
+    public ResponseEntity<ByteArrayResource> analyzeDemographicData(List<DemographicData> demographicDataList) {
         Advertisement toDisplay;
         Random rand = new Random();
-        int randInt = rand.nextInt(userAdvertisementRepository.getApprovedCount()+1);
+        int randInt = rand.nextInt(userAdvertisementRepository.getApprovedCount() + 1);
 
         if (demographicDataList.isEmpty()) {
             toDisplay = userAdvertisementRepository.findAll().get(randInt).getAdvertisement();
         } else {
             Map<String, Integer> categoryCounts = demographicDataList.stream()
-                    .collect(Collectors.groupingBy(d -> d.getAgeRange() + "-" + d.getGender(), Collectors.summingInt(d -> 1)));
+                    .filter(d -> d.getAge() > 8)
+                    .collect(Collectors.groupingBy(d -> getAgeRange(d.getAge()) + "-" + d.getGender(), Collectors.summingInt(d -> 1)));
 
             List<String> topCategories = categoryCounts.entrySet().stream()
                     .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
@@ -170,20 +123,32 @@ public class AdvertisementServiceImpl implements AdvertisementService{
                 toDisplay = userAdvertisementRepository.findAll().get(randInt).getAdvertisement();
             }
         }
-        return toDisplay;
+        return cloudStorageService.fetchAdvertisementFromCloud(toDisplay.getAdvertisementUrl());
+    }
+
+    private String getAgeRange(int age) {
+        if (age >= 0 && age <= 18) {
+            return "08-18";
+        } else if (age >= 19 && age <= 60) {
+            return "19-60";
+        } else if (age >= 61) {
+            return "61-100";
+        } else {
+            return null;
+        }
     }
 
     private Advertisement findAdvertisementByDemographics(List<String> topCategories) {
         Random rand = new Random();
         for (String category : topCategories) {
-            String takenRange = category.substring(0,5);
+            String takenRange = category.substring(0, 5);
             String takenGender = category.substring(6);
-            for (int checkingPriority = 1; checkingPriority <= 3 ; checkingPriority++) {
-                List<UserAdvertisement> matchingAds = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, takenGender, checkingPriority, "A");
+            for (int checkingPriority = 1; checkingPriority <= 3; checkingPriority++) {
+                List<UserAdvertisement> matchingAds = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, takenGender, checkingPriority, Status.ACTIVE_STATUS.status());
                 if (!matchingAds.isEmpty()) {
                     return matchingAds.get(rand.nextInt(matchingAds.size())).getAdvertisement();
                 }
-                matchingAds = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, "Both", checkingPriority, "A");
+                matchingAds = userAdvertisementRepository.findMatchingAdsByDemographicAndPriority(takenRange, "Both", checkingPriority, Status.ACTIVE_STATUS.status());
                 if (!matchingAds.isEmpty()) {
                     return matchingAds.get(rand.nextInt(matchingAds.size())).getAdvertisement();
                 }
@@ -191,37 +156,5 @@ public class AdvertisementServiceImpl implements AdvertisementService{
         }
         return null;
     }
-
-//    Body for POSTMAN testing
-//            [
-//    {
-//        "ageRange": "18-24",
-//            "gender": "Male"
-//    },
-//    {
-//        "ageRange": "18-24",
-//            "gender": "Male"
-//    },
-//    {
-//        "ageRange": "25-34",
-//            "gender": "Female"
-//    },
-//    {
-//        "ageRange": "35-44",
-//            "gender": "Male"
-//    },
-//    {
-//        "ageRange": "18-24",
-//            "gender": "Female"
-//    },
-//    {
-//        "ageRange": "18-24",
-//            "gender": "Female"
-//    },
-//    {
-//        "ageRange": "18-24",
-//            "gender": "Female"
-//    }
-//]
 
 }

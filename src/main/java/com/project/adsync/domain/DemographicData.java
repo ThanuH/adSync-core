@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class DemographicData {
-    private String ageRange;
+    private int age;
     private String gender;
 }
 

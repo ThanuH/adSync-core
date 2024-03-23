@@ -11,6 +11,7 @@ import com.project.adsync.repository.UserRepository;
 import com.project.adsync.service.AdvertisementService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +31,6 @@ public class AdvertisementController {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private UserAdvertisementRepository userAdvertisementRepository;
-
-
 
     @GetMapping (value = "/getAllBusinessCatergories")
     public List<BusinessCategory> getAllBusinessCategories() {
@@ -61,7 +57,7 @@ public class AdvertisementController {
     }
 
     @PostMapping(value = "/analyzeDemographicData")
-    public Advertisement analyzeDemographicData(@RequestBody List<DemographicData> demographicDataList) {
+    public ResponseEntity<ByteArrayResource> analyzeDemographicData(@RequestBody List<DemographicData> demographicDataList) {
         return advertisementService.analyzeDemographicData(demographicDataList);
     }
 }

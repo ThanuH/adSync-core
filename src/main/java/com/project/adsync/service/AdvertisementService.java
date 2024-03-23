@@ -5,6 +5,8 @@ import com.project.adsync.domain.BusinessCategory;
 import com.project.adsync.domain.DemographicData;
 import com.project.adsync.domain.User;
 import com.project.adsync.model.request.UploadAdReq;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,7 @@ public interface AdvertisementService {
 
     String uploadUserAdvertisement(UploadAdReq uploadAdReq, User user);
 
-    Advertisement analyzeDemographicData(List<DemographicData> demographicDataList);
+    ResponseEntity<ByteArrayResource> analyzeDemographicData(List<DemographicData> demographicDataList);
 
 //    String updateUserAdvertisement(UploadAdReq uploadAdReq);
 
