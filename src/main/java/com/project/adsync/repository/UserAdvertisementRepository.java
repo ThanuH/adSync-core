@@ -12,19 +12,19 @@ import java.util.List;
 
 @Repository
 public interface UserAdvertisementRepository extends JpaRepository<UserAdvertisement, Integer> {
-    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'S'")
+    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'PENDING'")
     int getSubmittedCount();
-    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'A'")
+    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'APPROVED'")
     int getApprovedCount();
-    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'R'")
+    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'REJECTED'")
     int getRejectedCount();
     @Query("SELECT count(*) FROM UserAdvertisement a WHERE  a.user = :user")
     int getCustomerWiseSubmitedAdCount(@Param("user") User user);
-    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'A' AND a.user = :user")
+    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'APPROVED' AND a.user = :user")
     int getCustomerWiseApprovedAdCount(@Param("user") User user);
-    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'R' AND a.user = :user")
+    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'REJECTED' AND a.user = :user")
     int getCustomerWiseRejectedAdCount(@Param("user") User user);
-    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'S' AND a.user = :user")
+    @Query("SELECT count(*) FROM UserAdvertisement a WHERE a.status = 'PENDING' AND a.user = :user")
     int getCustomerWisePendingAdCount(@Param("user") User user);
     @Query("SELECT ua FROM UserAdvertisement ua WHERE ua.uniqueIdentifier = :uniqueIdentifier")
     List<UserAdvertisement> getAdsListByUniqueIdentifier(@Param("uniqueIdentifier") String uniqueIdentifier);

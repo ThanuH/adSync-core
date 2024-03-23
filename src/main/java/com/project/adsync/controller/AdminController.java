@@ -60,12 +60,17 @@ public class AdminController {
     @GetMapping("/getAllPendingReportedIssues")
     public AdsyncResponse getAllPendingReportedIssues(@RequestParam(value = "userName", required = false) String userName) {
         AdsyncResponse adsyncResponse = new AdsyncResponse();
-        User user =   userService.getUserByUserName(userName);
-        if (user != null) {
-            List<ReportedIssue> userWiseIssues = userService.getUserWiseIssues(user);
-            adsyncResponse.setResponseCode("200");
-            adsyncResponse.setResponseObject(userWiseIssues);
-        }else {
+        if (userName != null) {
+            User user = userService.getUserByUserName(userName);
+            if (user != null) {
+                List<ReportedIssue> userWiseIssues = userService.getUserWiseIssues(user);
+                adsyncResponse.setResponseCode("200");
+                adsyncResponse.setResponseObject(userWiseIssues);
+            } else {
+                adsyncResponse.setResponseCode("404");
+                adsyncResponse.setResponseObject("User not found");
+            }
+        } else {
             List<ReportedIssue> reportedIssues = userService.getAllPendingReportedIssues();
             adsyncResponse.setResponseCode("200");
             adsyncResponse.setResponseObject(reportedIssues);

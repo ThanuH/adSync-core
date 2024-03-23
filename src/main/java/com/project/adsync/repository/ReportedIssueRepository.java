@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface ReportedIssueRepository extends JpaRepository<ReportedIssue, Integer>{
 
-    @Query("SELECT count(*) FROM ReportedIssue r WHERE r.status = 'P'")
+    @Query("SELECT count(*) FROM ReportedIssue r WHERE r.status = 'PENDING'")
     int getPendingCount();
 
-    @Query("SELECT r FROM ReportedIssue r WHERE r.status = 'P' AND r.user = :user")
+    @Query("SELECT r FROM ReportedIssue r WHERE r.status = 'PENDING' AND r.user = :user")
     List<ReportedIssue> getUserWiseIssues(@Param("user") User user);
 }
