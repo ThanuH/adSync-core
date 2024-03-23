@@ -91,7 +91,15 @@ public class AdvertisementServiceImpl implements AdvertisementService{
                     userAdvertisement.setUser(user);
                     userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
                     userAdvertisement.setPriority(basicAdDetails.getPriority());
-                    userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
+                    //Teenagers (08-18) , Adults (19-60) , Senior Citizens (61-100)
+                    if(basicAdDetails.getAgeRange().equalsIgnoreCase("Child")) {
+                        userAdvertisement.setTargetedAge("08-18");
+                    } else if(basicAdDetails.getAgeRange().equalsIgnoreCase("Young")) {
+                        userAdvertisement.setTargetedAge("19-60");
+                    } else {
+                        userAdvertisement.setTargetedAge("61-100");
+                    }
+                    //userAdvertisement.setTargetedAge(basicAdDetails.getAgeRange());
                     userAdvertisement.setTargetedAudience(basicAdDetails.getGender());
                     userAdvertisement.setStatus(Status.PENDING_STATUS.status());
                     userAdvertisement.setUniqueIdentifier(uploadAdReq.getUniqueIdentifier());
