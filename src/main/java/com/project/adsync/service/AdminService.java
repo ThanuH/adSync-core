@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface AdminService {
     int getTotalNoOfUsers(int id);
     HashMap<String, Integer> getDashboardDetails();
+    ReportedIssue getReportedIssueById(int issueId);
 
+    void updateIssueStatus(String status, ReportedIssue reportedIssue);
 }

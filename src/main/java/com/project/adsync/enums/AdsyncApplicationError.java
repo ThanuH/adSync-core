@@ -7,10 +7,11 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 public enum AdsyncApplicationError {
     USER_ALREADY_EXIST(1, "User already exits", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_CREDENTIALS(2, "Invalid Username or Password, Please Check again", HttpStatus.UNAUTHORIZED),
+    INVALID_CREDENTIALS(2, "Invalid username or password, Please Check again", HttpStatus.UNAUTHORIZED),
     USER_NOT_FOUND(3,"User not found" ,HttpStatus.UNAUTHORIZED ),
-    USER_BLOCKED(4,"The User is blocked. Please Contact AdSync Administrators" ,HttpStatus.UNAUTHORIZED ),
-    MEDIA_NOT_FOUND(5,"Advertisement media not found",HttpStatus.BAD_REQUEST);
+    USER_BLOCKED(4,"The user is blocked. Please contact adSync administrators" ,HttpStatus.UNAUTHORIZED ),
+    MEDIA_NOT_FOUND(5,"Advertisement media not found",HttpStatus.BAD_REQUEST),
+    ADVERTISEMENT_DELETE_ERROR(6,"Failed to delete advertisement" ,HttpStatus.NOT_MODIFIED);
 
 
 

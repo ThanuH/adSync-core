@@ -5,4 +5,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface CloudStorageService {
     ResponseEntity<ByteArrayResource> fetchAdvertisementFromCloud(String videoName);
+    public ResponseEntity<String> deleteFile(String fileName);
 }

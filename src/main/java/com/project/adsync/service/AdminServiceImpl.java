@@ -1,5 +1,6 @@
 package com.project.adsync.service;
 
+import com.project.adsync.domain.ReportedIssue;
 import com.project.adsync.domain.User;
 import com.project.adsync.domain.UserRole;
 import com.project.adsync.repository.ReportedIssueRepository;
@@ -54,7 +55,17 @@ public class AdminServiceImpl implements AdminService{
         return dashBoardDetails;
     }
 
+    @Override
+    public ReportedIssue getReportedIssueById(int issueId) {
+        Optional<ReportedIssue> reportedIssue = reportedIssueRepository.findById(issueId);
+        return reportedIssue.orElse(null);
+    }
 
+    @Override
+    public void updateIssueStatus(String status, ReportedIssue reportedIssue) {
+        reportedIssue.setStatus(status);
+        reportedIssueRepository.save(reportedIssue);
+    }
 
 
 }

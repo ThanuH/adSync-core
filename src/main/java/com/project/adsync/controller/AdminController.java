@@ -78,4 +78,49 @@ public class AdminController {
         return adsyncResponse;
     }
 
+    @PutMapping("/{userId}/updateUserStatus")
+    public AdsyncResponse updateUserStatus(@PathVariable("userId") int userId, @RequestParam("status") String status) {
+        AdsyncResponse adsyncResponse = new AdsyncResponse();
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            userService.updateUserStatus(status, user);
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject("User status updated successfully");
+        } else {
+            adsyncResponse.setResponseCode("404");
+            adsyncResponse.setResponseObject("User not found");
+        }
+        return adsyncResponse;
+    }
+
+    @DeleteMapping("/{userId}/deleteUser")
+    public AdsyncResponse deleteUser(@PathVariable("userId") int userId) {
+        AdsyncResponse adsyncResponse = new AdsyncResponse();
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            userService.deleteUser(user);
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject("User deleted successfully");
+        } else {
+            adsyncResponse.setResponseCode("404");
+            adsyncResponse.setResponseObject("User not found");
+        }
+        return adsyncResponse;
+    }
+
+    @PutMapping("/{issueId}/updateIssueStatus")
+    public AdsyncResponse updateIssueStatus(@PathVariable("issueId") int issueId, @RequestParam("status") String status) {
+        AdsyncResponse adsyncResponse = new AdsyncResponse();
+        ReportedIssue reportedIssue = adminService.getReportedIssueById(issueId);
+        if (reportedIssue != null) {
+            adminService.updateIssueStatus(status, reportedIssue);
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject("Issue status updated successfully");
+        } else {
+            adsyncResponse.setResponseCode("404");
+            adsyncResponse.setResponseObject("Issue not found");
+        }
+        return adsyncResponse;
+    }
+
 }

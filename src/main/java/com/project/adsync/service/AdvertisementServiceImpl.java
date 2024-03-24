@@ -1,7 +1,10 @@
 package com.project.adsync.service;
 
+import com.google.cloud.storage.Blob;
 import com.project.adsync.domain.*;
+import com.project.adsync.enums.AdsyncApplicationError;
 import com.project.adsync.enums.Status;
+import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.BasicAdDetails;
 import com.project.adsync.model.request.UploadAdReq;
 import com.project.adsync.repository.AdvertisemntRepository;
@@ -9,6 +12,7 @@ import com.project.adsync.repository.BusinessCategoryRepository;
 import com.project.adsync.repository.UserAdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -142,6 +146,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         return cloudStorageService.fetchAdvertisementFromCloud(toDisplay.getAdvertisementUrl());
     }
 
+
     private String getAgeRange(int age) {
         if (age >= 0 && age <= 18) {
             return "08-18";
@@ -172,5 +177,48 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
         return null;
     }
+
+    @Override
+    public String deleteAd(int id, int adId) {
+        UserAdvertisement userAdvertisement = userAdvertisementRepository.findById(adId).orElse(null);
+        if (userAdvertisement != null) {
+            Advertisement advertisement = userAdvertisement.getAdvertisement();
+            String fileName =  userAdvertisement.getAdvertisement().getAdvertisementUrl();
+            try{
+                userAdvertisementRepository.deleteByUniqueIdentifier(userAdvertisement.getUniqueIdentifier());
+            }catch (Exception e) {
+                throw new AdsyncException(AdsyncApplicationError.ADVERTISEMENT_DELETE_ERROR);
+            }
+            advertisementRepository.delete(advertisement);
+            cloudStorageService.deleteFile(fileName);
+            return "Advertisement deleted successfully";
+        } else {
+            return "Advertisement not found";
+        }
+    }
+
+    @Override
+    public List<UserAdvertisement> getUserWisePendingAdvertisement(User user) {
+        return userAdvertisementRepository.getUserWisePendingAdvertisement(user);
+    }
+
+    @Override
+    public List<UserAdvertisement> getAllPendingAdvertisement() {
+        return userAdvertisementRepository.findAllPendingAds();
+    }
+
+    @Override
+    public List<UserAdvertisement> getAdByUniqueIdentifier(String uniquieIdentifier) {
+        return userAdvertisementRepository.getAdsListByUniqueIdentifier(uniquieIdentifier);
+    }
+
+    @Override
+    public void updateAdStatus(String status, List<UserAdvertisement> userAdvertisements) {
+        userAdvertisements.forEach(userAdvertisement -> {
+            userAdvertisement.setStatus(status);
+            userAdvertisementRepository.save(userAdvertisement);
+        });
+    }
+
 
 }

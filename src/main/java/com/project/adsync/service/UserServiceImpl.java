@@ -137,4 +137,20 @@ public class UserServiceImpl implements UserService{
     public List<ReportedIssue> getAllPendingReportedIssues() {
         return reportedIssueRepository.findAll();
     }
+
+    @Override
+    public void updateUserStatus(String status, User user) {
+        user.setStatus(status);
+        userRepository.save(user);
+    }
+
+    @Override
+    public User getUserById(int userId) {
+        return userRepository.getReferenceById(userId);
+    }
+
+    @Override
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
 }

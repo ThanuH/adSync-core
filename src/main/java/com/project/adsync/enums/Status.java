@@ -5,7 +5,8 @@ public enum Status {
     ACTIVE_STATUS("ACTIVE","ACTIVE"),
     APPROVED_STATUS("APPROVED","APPROVED"),
     DECLINED_STATUS("DECLINED","DECLINED"),
-    BLOCKED_STATUS("BLOCKED","BLOCKED" );
+    BLOCKED_STATUS("BLOCKED","BLOCKED" ),
+    REJECTED_STATUS("REJECTED","REJECTED");
 
     private String status;
     private String description;

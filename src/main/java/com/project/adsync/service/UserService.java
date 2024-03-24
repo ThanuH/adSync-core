@@ -25,4 +25,7 @@ public interface UserService {
     List<ReportedIssue> getUserWiseIssues(User user);
 
     List<ReportedIssue> getAllPendingReportedIssues();
+    void updateUserStatus(String status, User user);
+    User getUserById(int userId);
+    void deleteUser(User user);
 }
