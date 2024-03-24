@@ -66,9 +66,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                     userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
                     userAdvertisement.setPriority(basicAdDetails.getPriority());
                     //Teenagers (08-18) , Adults (19-60) , Senior Citizens (61-100)
-                    if(basicAdDetails.getAgeRange().equalsIgnoreCase("Child")) {
+                    if(basicAdDetails.getAgeRange().equalsIgnoreCase("Teenagers")) {
                         userAdvertisement.setTargetedAge("08-18");
-                    } else if(basicAdDetails.getAgeRange().equalsIgnoreCase("Young")) {
+                    } else if(basicAdDetails.getAgeRange().equalsIgnoreCase("Adults")) {
                         userAdvertisement.setTargetedAge("19-60");
                     } else {
                         userAdvertisement.setTargetedAge("61-100");
@@ -98,9 +98,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                     userAdvertisement.setBusinessCategory(getBusinessCategoryById(uploadAdReq.getBusCatId()));
                     userAdvertisement.setPriority(basicAdDetails.getPriority());
                     //Teenagers (08-18) , Adults (19-60) , Senior Citizens (61-100)
-                    if(basicAdDetails.getAgeRange().equalsIgnoreCase("Child")) {
+                    if(basicAdDetails.getAgeRange().equalsIgnoreCase("Teenagers")) {
                         userAdvertisement.setTargetedAge("08-18");
-                    } else if(basicAdDetails.getAgeRange().equalsIgnoreCase("Young")) {
+                    } else if(basicAdDetails.getAgeRange().equalsIgnoreCase("Adults")) {
                         userAdvertisement.setTargetedAge("19-60");
                     } else {
                         userAdvertisement.setTargetedAge("61-100");
