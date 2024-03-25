@@ -5,21 +5,15 @@ import com.project.adsync.enums.AdsyncApplicationError;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.AdsyncResponse;
 import com.project.adsync.model.request.UploadAdReq;
-import com.project.adsync.repository.AdvertisemntRepository;
-import com.project.adsync.repository.UserAdvertisementRepository;
 import com.project.adsync.repository.UserRepository;
 import com.project.adsync.service.AdvertisementService;
 import com.project.adsync.service.UserService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/adSync.api/advertisement")
@@ -90,14 +84,14 @@ public class AdvertisementController {
     @PutMapping(value = "/{id}/updateAdStatus")
     public AdsyncResponse updateAdStatus(@PathVariable("uniquieIdentifier") String uniquieIdentifier, @RequestParam("status") String status) {
         AdsyncResponse adsyncResponse = new AdsyncResponse();
-        List<UserAdvertisement> userAdvertisements = advertisementService.getAdByUniqueIdentifier(uniquieIdentifier);
-        if (!userAdvertisements.isEmpty()) {
-            advertisementService.updateAdStatus(status, userAdvertisements);
+        List<UserAdvertisement> uniqueUserAdvertisements = advertisementService.getAdByUniqueIdentifier(uniquieIdentifier);
+        if (!uniqueUserAdvertisements.isEmpty()) {
+            advertisementService.updateAdStatus(status, uniqueUserAdvertisements);
             adsyncResponse.setResponseCode("200");
-            adsyncResponse.setResponseObject("Advertisement Updated Successfully");
+            adsyncResponse.setResponseObject("Advertisement Updated Successfully !");
         } else {
             adsyncResponse.setResponseCode("404");
-            adsyncResponse.setResponseObject("Invalid unique identifier. Please recheck");
+            adsyncResponse.setResponseObject("Invalid unique identifier. Please recheck !");
         }
         return adsyncResponse;
     }
