@@ -111,14 +111,14 @@ public class AdminController {
     @PutMapping("/{issueId}/updateIssueStatus")
     public AdsyncResponse updateIssueStatus(@PathVariable("issueId") int issueId, @RequestParam("status") String status) {
         AdsyncResponse adsyncResponse = new AdsyncResponse();
-        ReportedIssue reportedIssue = adminService.getReportedIssueById(issueId);
-        if (reportedIssue != null) {
-            adminService.updateIssueStatus(status, reportedIssue);
+        ReportedIssue reportedIssueById = adminService.getReportedIssueById(issueId);
+        if (reportedIssueById != null) {
+            adminService.updateIssueStatus(status, reportedIssueById);
             adsyncResponse.setResponseCode("200");
-            adsyncResponse.setResponseObject("Issue status updated successfully");
+            adsyncResponse.setResponseObject("Issue status updated successfully!");
         } else {
             adsyncResponse.setResponseCode("404");
-            adsyncResponse.setResponseObject("Issue not found");
+            adsyncResponse.setResponseObject("Issue not found!");
         }
         return adsyncResponse;
     }
