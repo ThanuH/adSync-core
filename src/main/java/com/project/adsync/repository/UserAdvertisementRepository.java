@@ -45,4 +45,7 @@ public interface UserAdvertisementRepository extends JpaRepository<UserAdvertise
     @Query("SELECT ua FROM UserAdvertisement ua WHERE ua.status = 'PENDING'")
     List<UserAdvertisement> findAllPendingAds();
 
+    @Query("SELECT ua FROM UserAdvertisement ua WHERE ua.id = :id")
+    UserAdvertisement getAllById(int id);
+
 }

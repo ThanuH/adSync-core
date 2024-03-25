@@ -68,7 +68,7 @@ public class AdvertisementController {
     @GetMapping(value = "/getAllPendingAdvertisement")
     public AdsyncResponse getAllPendingReportedIssues(@RequestParam(value = "userName", required = false) String userName) {
         AdsyncResponse adsyncResponse = new AdsyncResponse();
-        if(userName != null) {
+        if (userName != null) {
             User user = userService.getUserByUserName(userName);
             if (user != null) {
                 List<UserAdvertisement> userWisePendingAdvertisement = advertisementService.getUserWisePendingAdvertisement(user);
@@ -78,7 +78,7 @@ public class AdvertisementController {
                 adsyncResponse.setResponseCode("404");
                 adsyncResponse.setResponseObject("User not found");
             }
-        }else {
+        } else {
             List<UserAdvertisement> allPendingAdvertisement = advertisementService.getAllPendingAdvertisement();
             adsyncResponse.setResponseCode("200");
             adsyncResponse.setResponseObject(allPendingAdvertisement);
@@ -86,7 +86,6 @@ public class AdvertisementController {
         return adsyncResponse;
 
     }
-
 
     @PutMapping(value = "/{id}/updateAdStatus")
     public AdsyncResponse updateAdStatus(@PathVariable("uniquieIdentifier") String uniquieIdentifier, @RequestParam("status") String status) {
@@ -99,6 +98,20 @@ public class AdvertisementController {
         } else {
             adsyncResponse.setResponseCode("404");
             adsyncResponse.setResponseObject("Invalid unique identifier. Please recheck");
+        }
+        return adsyncResponse;
+    }
+
+    @GetMapping(value = "/{id}/getAdDetails")
+    public AdsyncResponse getAdDetails(@PathVariable("id") int id) {
+        AdsyncResponse adsyncResponse = new AdsyncResponse();
+        UserAdvertisement userAdvertisement = advertisementService.getUserAdvertisementById(id);
+        if (userAdvertisement != null) {
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject(userAdvertisement);
+        } else {
+            adsyncResponse.setResponseCode("404");
+            adsyncResponse.setResponseObject("Advertisement not found");
         }
         return adsyncResponse;
     }

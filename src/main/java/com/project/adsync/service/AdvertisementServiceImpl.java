@@ -1,6 +1,5 @@
 package com.project.adsync.service;
 
-import com.google.cloud.storage.Blob;
 import com.project.adsync.domain.*;
 import com.project.adsync.enums.AdsyncApplicationError;
 import com.project.adsync.enums.Status;
@@ -12,7 +11,6 @@ import com.project.adsync.repository.BusinessCategoryRepository;
 import com.project.adsync.repository.UserAdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -195,6 +193,11 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         } else {
             return "Advertisement not found";
         }
+    }
+
+    @Override
+    public UserAdvertisement getUserAdvertisementById(int id) {
+        return userAdvertisementRepository.getAllById(id);
     }
 
     @Override

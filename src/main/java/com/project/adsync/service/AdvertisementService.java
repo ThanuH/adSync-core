@@ -21,6 +21,8 @@ public interface AdvertisementService {
 
     String deleteAd(int id, int adId);
 
+    UserAdvertisement getUserAdvertisementById(int id);
+
     List<UserAdvertisement> getUserWisePendingAdvertisement(User user);
 
     List<UserAdvertisement> getAllPendingAdvertisement();
