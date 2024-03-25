@@ -109,4 +109,18 @@ public class AdvertisementController {
         }
         return adsyncResponse;
     }
+
+    @GetMapping(value = "/{id}/getAdByUser")
+    public AdsyncResponse getAdByUser(@PathVariable("id") int id) {
+        AdsyncResponse adsyncResponse = new AdsyncResponse();
+        List<UserAdvertisement> userAdvertisements = advertisementService.getAdByUser(id);
+        if (!userAdvertisements.isEmpty()) {
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject(userAdvertisements);
+        } else {
+            adsyncResponse.setResponseCode("404");
+            adsyncResponse.setResponseObject("Advertisement not found");
+        }
+        return adsyncResponse;
+    }
 }

@@ -223,5 +223,10 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         });
     }
 
+    @Override
+    public List<UserAdvertisement> getAdByUser(int id) {
+        return userAdvertisementRepository.getAdsByUser(id);
+    }
+
 
 }

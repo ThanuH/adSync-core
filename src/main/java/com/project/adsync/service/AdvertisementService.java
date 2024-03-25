@@ -30,4 +30,6 @@ public interface AdvertisementService {
     List<UserAdvertisement> getAdByUniqueIdentifier(String uniquieIdentifier);
 
     void updateAdStatus(String status, List<UserAdvertisement> userAdvertisements);
+
+    List<UserAdvertisement> getAdByUser(int id);
 }
