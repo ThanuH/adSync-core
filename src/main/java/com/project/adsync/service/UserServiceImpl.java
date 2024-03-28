@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService{
             Optional<BusinessCategory> businessCategory = businessCategoryRepository.findById(userRegReq.getBusinessCategory());
             newUser.setBusinessCategory(businessCategory.orElse(null));
             newUser.setPassword(userRegReq.getPassword());
-            newUser.setStatus("A");
+            newUser.setStatus(Status.ACTIVE_STATUS.status());
             newUser.setUserRole(userRoleRepository.getUserById(2));
             logger.info("User " + user.toString());
             return userRepository.save(newUser);
