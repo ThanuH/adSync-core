@@ -5,21 +5,15 @@ import com.project.adsync.enums.AdsyncApplicationError;
 import com.project.adsync.exception.AdsyncException;
 import com.project.adsync.model.AdsyncResponse;
 import com.project.adsync.model.request.UploadAdReq;
-import com.project.adsync.repository.AdvertisemntRepository;
-import com.project.adsync.repository.UserAdvertisementRepository;
 import com.project.adsync.repository.UserRepository;
 import com.project.adsync.service.AdvertisementService;
 import com.project.adsync.service.UserService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/adSync.api/advertisement")
@@ -68,7 +62,7 @@ public class AdvertisementController {
     @GetMapping(value = "/getAllPendingAdvertisement")
     public AdsyncResponse getAllPendingReportedIssues(@RequestParam(value = "userName", required = false) String userName) {
         AdsyncResponse adsyncResponse = new AdsyncResponse();
-        if(userName != null) {
+        if (userName != null) {
             User user = userService.getUserByUserName(userName);
             if (user != null) {
                 List<UserAdvertisement> userWisePendingAdvertisement = advertisementService.getUserWisePendingAdvertisement(user);
@@ -78,7 +72,7 @@ public class AdvertisementController {
                 adsyncResponse.setResponseCode("404");
                 adsyncResponse.setResponseObject("User not found");
             }
-        }else {
+        } else {
             List<UserAdvertisement> allPendingAdvertisement = advertisementService.getAllPendingAdvertisement();
             adsyncResponse.setResponseCode("200");
             adsyncResponse.setResponseObject(allPendingAdvertisement);
@@ -87,18 +81,45 @@ public class AdvertisementController {
 
     }
 
-
     @PutMapping(value = "/{id}/updateAdStatus")
     public AdsyncResponse updateAdStatus(@PathVariable("uniquieIdentifier") String uniquieIdentifier, @RequestParam("status") String status) {
         AdsyncResponse adsyncResponse = new AdsyncResponse();
-        List<UserAdvertisement> userAdvertisements = advertisementService.getAdByUniqueIdentifier(uniquieIdentifier);
-        if (!userAdvertisements.isEmpty()) {
-            advertisementService.updateAdStatus(status, userAdvertisements);
+        List<UserAdvertisement> uniqueUserAdvertisements = advertisementService.getAdByUniqueIdentifier(uniquieIdentifier);
+        if (!uniqueUserAdvertisements.isEmpty()) {
+            advertisementService.updateAdStatus(status, uniqueUserAdvertisements);
             adsyncResponse.setResponseCode("200");
-            adsyncResponse.setResponseObject("Advertisement Updated Successfully");
+            adsyncResponse.setResponseObject("Advertisement Updated Successfully !");
         } else {
             adsyncResponse.setResponseCode("404");
-            adsyncResponse.setResponseObject("Invalid unique identifier. Please recheck");
+            adsyncResponse.setResponseObject("Invalid unique identifier. Please recheck !");
+        }
+        return adsyncResponse;
+    }
+
+    @GetMapping(value = "/{id}/getAdDetails")
+    public AdsyncResponse getAdDetails(@PathVariable("id") int id) {
+        AdsyncResponse adsyncResponse = new AdsyncResponse();
+        UserAdvertisement userAdvertisement = advertisementService.getUserAdvertisementById(id);
+        if (userAdvertisement != null) {
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject(userAdvertisement);
+        } else {
+            adsyncResponse.setResponseCode("404");
+            adsyncResponse.setResponseObject("Advertisement not found");
+        }
+        return adsyncResponse;
+    }
+
+    @GetMapping(value = "/{id}/getAdByUser")
+    public AdsyncResponse getAdByUser(@PathVariable("id") int id) {
+        AdsyncResponse adsyncResponse = new AdsyncResponse();
+        List<UserAdvertisement> userAdvertisements = advertisementService.getAdByUser(id);
+        if (!userAdvertisements.isEmpty()) {
+            adsyncResponse.setResponseCode("200");
+            adsyncResponse.setResponseObject(userAdvertisements);
+        } else {
+            adsyncResponse.setResponseCode("404");
+            adsyncResponse.setResponseObject("Advertisement not found");
         }
         return adsyncResponse;
     }
